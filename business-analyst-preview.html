@@ -1,0 +1,2485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Analyst — 0 to Master | Learn Data Analytics</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+/* ══════════════════════════════════════
+   VARIABLES — edit here to restyle everything
+   ══════════════════════════════════════ */
+:root {
+  /* Backgrounds */
+  --bg:     #07080d;
+  --s1:     #0d0f18;
+  --s2:     #131620;
+  --s3:     #191d2c;
+  --s4:     #1f2438;
+
+  /* Borders */
+  --border:  #1e2438;
+  --border2: #2a3058;
+
+  /* Accent Colors */
+  --a:      #00f5a0;   /* green  — primary */
+  --a2:     #4d8fff;   /* blue   — secondary */
+  --a3:     #ff5f7e;   /* red    — danger/hard */
+  --gold:   #ffd166;   /* gold   — streak/XP */
+  --purple: #c084fc;   /* purple — level/XP */
+  --orange: #fb923c;   /* orange — ML/warnings */
+
+  /* Dim versions (backgrounds) */
+  --a-dim:      rgba(0,245,160,.1);
+  --a2-dim:     rgba(77,143,255,.1);
+  --a3-dim:     rgba(255,95,126,.1);
+  --gold-dim:   rgba(255,209,102,.1);
+  --purple-dim: rgba(192,132,252,.1);
+  --orange-dim: rgba(251,146,60,.1);
+
+  /* Text */
+  --text:   #dde2f0;
+  --text2:  #9aa3c0;
+  --muted:  #545d80;
+  --muted2: #323852;
+
+  /* Typography */
+  --mono:    'JetBrains Mono', monospace;
+  --display: 'Bebas Neue', sans-serif;
+  --sans:    'Syne', sans-serif;
+
+  /* Misc */
+  --radius:    10px;
+  --radius-sm: 6px;
+  --radius-lg: 16px;
+  --shadow:    0 4px 24px rgba(0,0,0,.45);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,.55);
+  --glow:      0 0 30px rgba(0,245,160,.1);
+}
+
+/* ══════════════════════════════════════
+   RESET
+   ══════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; }
+input, textarea, select { font-family: inherit; color: var(--text); }
+img { max-width: 100%; display: block; }
+ul, ol { list-style: none; }
+
+/* ══════════════════════════════════════
+   AMBIENT BACKGROUND
+   ══════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,245,160,.017) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,245,160,.017) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none; z-index: 0;
+}
+.orb {
+  position: fixed; pointer-events: none; z-index: 0; border-radius: 50%;
+}
+.orb1 {
+  top: -300px; left: -200px; width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(0,245,160,.055), transparent 70%);
+  animation: orbFloat 14s ease-in-out infinite alternate;
+}
+.orb2 {
+  bottom: -300px; right: -200px; width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(77,143,255,.05), transparent 70%);
+  animation: orbFloat 18s ease-in-out infinite alternate-reverse;
+}
+
+/* ══════════════════════════════════════
+   NAV
+   ══════════════════════════════════════ */
+.nav {
+  position: sticky; top: 0; z-index: 500;
+  background: rgba(7,8,13,.96);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  height: 54px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+
+.nav-logo {
+  font-family: var(--display);
+  font-size: 15px; letter-spacing: 2px; color: var(--a);
+  padding: 0 18px;
+  border-right: 1px solid var(--border);
+  white-space: nowrap; flex-shrink: 0;
+  line-height: 54px; display: block;
+}
+.nav-logo em { color: var(--text2); font-style: normal; font-size: 10px; letter-spacing: 1px; }
+
+.nav-items { display: flex; flex: 1; overflow-x: auto; scrollbar-width: none; }
+.nav-items::-webkit-scrollbar { display: none; }
+
+.nav-link {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 1.5px;
+  color: var(--muted); padding: 0 12px;
+  white-space: nowrap; display: flex; align-items: center;
+  height: 54px; flex-shrink: 0;
+  border: none; background: none;
+  border-bottom: 2px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.nav-link:hover, .nav-link.active { color: var(--a); border-bottom-color: var(--a); }
+
+.nav-right {
+  display: flex; align-items: center;
+  border-left: 1px solid var(--border);
+  flex-shrink: 0; margin-left: auto;
+}
+.nav-stat {
+  padding: 0 12px; line-height: 54px;
+  font-family: var(--mono); font-size: 10px;
+  white-space: nowrap; border-right: 1px solid var(--border);
+}
+.nav-stat span { font-weight: 700; font-size: 12px; }
+
+/* ══════════════════════════════════════
+   LAYOUT
+   ══════════════════════════════════════ */
+.wrap { max-width: 1060px; margin: 0 auto; padding: 0 20px 100px; position: relative; z-index: 1; }
+
+.sec-head { display: flex; align-items: center; gap: 14px; padding: 52px 0 24px; }
+.sec-title { font-family: var(--display); font-size: 34px; letter-spacing: 2px; white-space: nowrap; }
+.sec-line { flex: 1; height: 1px; background: var(--border); }
+.sec-num  { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 2px; }
+.sec-desc { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
+
+/* ══════════════════════════════════════
+   GRIDS
+   ══════════════════════════════════════ */
+.grid2    { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid3    { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.grid4    { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+.grid-auto    { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: 16px; }
+.grid-auto-sm { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 12px; }
+
+/* ══════════════════════════════════════
+   CARDS
+   ══════════════════════════════════════ */
+.card {
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px;
+  transition: transform .22s, border-color .22s, box-shadow .22s;
+}
+.card:hover { transform: translateY(-3px); border-color: var(--border2); box-shadow: var(--shadow); }
+.card-glow:hover { box-shadow: var(--glow); border-color: rgba(0,245,160,.3); }
+.card-flat { background: var(--s1); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; }
+.card-inset { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; }
+
+/* ══════════════════════════════════════
+   BUTTONS
+   ══════════════════════════════════════ */
+.btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 1px;
+  padding: 10px 22px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--s2); color: var(--text2);
+  transition: all .2s; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn:hover                 { border-color: var(--a); color: var(--a); }
+.btn-primary               { background: var(--a); border-color: var(--a); color: var(--bg); font-weight: 700; }
+.btn-primary:hover         { background: #00d880; border-color: #00d880; color: var(--bg); }
+.btn-blue                  { background: var(--a2-dim); border-color: var(--a2); color: var(--a2); }
+.btn-blue:hover            { background: var(--a2); color: var(--bg); }
+.btn-red                   { background: var(--a3-dim); border-color: var(--a3); color: var(--a3); }
+.btn-red:hover             { background: var(--a3); color: #fff; }
+.btn-gold                  { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+.btn-gold:hover            { background: var(--gold); color: var(--bg); }
+.btn-sm   { padding: 7px 14px; font-size: 10px; }
+.btn-lg   { padding: 14px 30px; font-size: 13px; }
+.btn-full { width: 100%; justify-content: center; }
+
+/* ══════════════════════════════════════
+   INPUTS
+   ══════════════════════════════════════ */
+.input {
+  width: 100%; padding: 12px 16px;
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text);
+  font-family: var(--mono); font-size: 13px;
+  outline: none; transition: border-color .2s;
+}
+.input:focus { border-color: var(--a); }
+.input::placeholder { color: var(--muted); }
+.textarea  { resize: vertical; min-height: 100px; }
+.label     { font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px; display: block; }
+
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6285' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+  padding-right: 36px;
+}
+
+/* ══════════════════════════════════════
+   TAGS
+   ══════════════════════════════════════ */
+.tag { font-family: var(--mono); font-size: 9px; letter-spacing: 1px; padding: 3px 9px; border-radius: 2px; display: inline-block; }
+.tag-easy    { background: var(--a-dim);      color: var(--a);      border: 1px solid rgba(0,245,160,.3); }
+.tag-medium  { background: var(--gold-dim);   color: var(--gold);   border: 1px solid rgba(255,209,102,.3); }
+.tag-hard    { background: var(--a3-dim);     color: var(--a3);     border: 1px solid rgba(255,95,126,.3); }
+.tag-sql     { background: var(--a3-dim);     color: var(--a3);     border: 1px solid rgba(255,95,126,.25); }
+.tag-python  { background: var(--a2-dim);     color: var(--a2);     border: 1px solid rgba(77,143,255,.25); }
+.tag-excel   { background: var(--gold-dim);   color: var(--gold);   border: 1px solid rgba(255,209,102,.25); }
+.tag-stats   { background: var(--a-dim);      color: var(--a);      border: 1px solid rgba(0,245,160,.25); }
+.tag-powerbi { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(192,132,252,.25); }
+.tag-ml      { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(251,146,60,.25); }
+.tag-ds      { background: var(--a2-dim);     color: var(--a2);     border: 1px solid rgba(77,143,255,.25); }
+.tag-ai      { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(192,132,252,.25); }
+.tag-case    { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(251,146,60,.25); }
+.tag-behav   { background: var(--a-dim);      color: var(--a);      border: 1px solid rgba(0,245,160,.25); }
+
+/* ══════════════════════════════════════
+   PROGRESS
+   ══════════════════════════════════════ */
+.prog-wrap { height: 6px; background: var(--border); border-radius: 10px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 10px; transition: width .8s cubic-bezier(.4,0,.2,1); }
+.prog-green  { background: linear-gradient(90deg,var(--a),#00c880); }
+.prog-blue   { background: linear-gradient(90deg,var(--a2),var(--purple)); }
+.prog-gold   { background: linear-gradient(90deg,var(--gold),var(--orange)); }
+
+/* ══════════════════════════════════════
+   DIVIDER
+   ══════════════════════════════════════ */
+.divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+/* ══════════════════════════════════════
+   CODE
+   ══════════════════════════════════════ */
+.code-inline {
+  font-family: var(--mono); font-size: 12px;
+  background: var(--a2-dim); color: var(--a2);
+  padding: 2px 7px; border-radius: 3px;
+}
+.code-block {
+  font-family: var(--mono); font-size: 12px;
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 16px;
+  overflow-x: auto; line-height: 1.7; color: var(--a2);
+}
+
+/* ══════════════════════════════════════
+   ALERTS
+   ══════════════════════════════════════ */
+.alert { padding: 14px 18px; border-radius: var(--radius-sm); font-size: 14px; line-height: 1.6; }
+.alert-green  { background: var(--a-dim);      border: 1px solid rgba(0,245,160,.3);    color: var(--a); }
+.alert-red    { background: var(--a3-dim);     border: 1px solid rgba(255,95,126,.3);   color: var(--a3); }
+.alert-gold   { background: var(--gold-dim);   border: 1px solid rgba(255,209,102,.3);  color: var(--gold); }
+.alert-blue   { background: var(--a2-dim);     border: 1px solid rgba(77,143,255,.3);   color: var(--a2); }
+
+/* ══════════════════════════════════════
+   TABS
+   ══════════════════════════════════════ */
+.tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 20px; }
+.tab {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 1px;
+  padding: 8px 16px; background: var(--s2); border: 1px solid var(--border);
+  color: var(--muted); border-radius: 4px; transition: all .2s;
+}
+.tab:hover, .tab.active { border-color: var(--a); color: var(--a); background: var(--a-dim); }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; animation: fadeDown .25s ease; }
+
+/* ══════════════════════════════════════
+   SCROLLBAR
+   ══════════════════════════════════════ */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--s1); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted2); }
+
+/* ══════════════════════════════════════
+   MODAL
+   ══════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.75);
+  z-index: 800; display: flex; align-items: center; justify-content: center;
+  animation: fadeIn .2s ease; padding: 20px;
+}
+.modal-box {
+  background: var(--s2); border: 1px solid var(--border2);
+  border-radius: var(--radius); padding: 32px;
+  max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto;
+  animation: scaleIn .3s ease;
+}
+
+/* ══════════════════════════════════════
+   TOAST
+   ══════════════════════════════════════ */
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 999;
+  background: var(--s3); border: 1px solid var(--border2);
+  border-radius: var(--radius); padding: 13px 20px;
+  font-size: 14px; max-width: 320px;
+  animation: slideLeft .4s ease; box-shadow: var(--shadow);
+  transition: opacity .5s;
+}
+.toast.success { border-color: var(--a);    color: var(--a); }
+.toast.error   { border-color: var(--a3);   color: var(--a3); }
+.toast.info    { border-color: var(--a2);   color: var(--a2); }
+.toast.gold    { border-color: var(--gold); color: var(--gold); }
+
+/* ══════════════════════════════════════
+   CONFETTI
+   ══════════════════════════════════════ */
+.confetti-piece {
+  position: fixed; top: -20px; z-index: 9999; pointer-events: none;
+  animation: confettiFall 3s ease forwards;
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════ */
+@media (max-width: 768px) {
+  .grid2, .grid3, .grid4 { grid-template-columns: 1fr; }
+  .grid-auto { grid-template-columns: 1fr; }
+  .sec-title { font-size: 28px; }
+  .wrap { padding: 0 14px 80px; }
+}
+@media (max-width: 480px) {
+  .hide-mobile { display: none !important; }
+}
+/* ══════════════════════════════════════
+   KEYFRAMES
+   ══════════════════════════════════════ */
+@keyframes orbFloat    { 0%{transform:translate(0,0)}  100%{transform:translate(50px,30px)} }
+@keyframes fadeUp      { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn      { from{opacity:0} to{opacity:1} }
+@keyframes fadeDown    { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes slideLeft   { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+@keyframes scaleIn     { from{opacity:0;transform:scale(.92)} to{opacity:1;transform:scale(1)} }
+@keyframes pulse       { 0%,100%{opacity:1} 50%{opacity:.4} }
+@keyframes spin        { to{transform:rotate(360deg)} }
+@keyframes bounce      { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes shake       { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
+@keyframes glow        { 0%,100%{box-shadow:0 0 10px rgba(0,245,160,.2)} 50%{box-shadow:0 0 30px rgba(0,245,160,.5)} }
+@keyframes shimmer     { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+@keyframes blink       { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes streakFire  { 0%,100%{transform:scale(1) rotate(-2deg)} 50%{transform:scale(1.1) rotate(2deg)} }
+@keyframes confettiFall{ 0%{transform:translateY(0) rotate(0);opacity:1} 100%{transform:translateY(100vh) rotate(720deg);opacity:0} }
+@keyframes typewriter  { from{width:0} to{width:100%} }
+@keyframes countUp     { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+@keyframes borderPulse { 0%,100%{border-color:var(--border2)} 50%{border-color:var(--a)} }
+
+/* ══════════════════════════════════════
+   UTILITY CLASSES
+   ══════════════════════════════════════ */
+.anim-fadeUp  { animation: fadeUp  .5s ease both; }
+.anim-fadeIn  { animation: fadeIn  .4s ease both; }
+.anim-scaleIn { animation: scaleIn .4s ease both; }
+.anim-pulse   { animation: pulse   2s ease infinite; }
+.anim-spin    { animation: spin    1s linear infinite; }
+.anim-bounce  { animation: bounce  1.5s ease infinite; }
+.anim-glow    { animation: glow    2s ease infinite; }
+.anim-shake   { animation: shake   .4s ease; }
+
+/* Stagger delays */
+.d1 { animation-delay:.1s } .d2 { animation-delay:.2s } .d3 { animation-delay:.3s }
+.d4 { animation-delay:.4s } .d5 { animation-delay:.5s } .d6 { animation-delay:.6s }
+.d7 { animation-delay:.7s } .d8 { animation-delay:.8s }
+
+/* Skeleton */
+.skeleton {
+  background: linear-gradient(90deg, var(--s2) 25%, var(--s3) 50%, var(--s2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+/* Flashcard flip */
+.fc-wrap    { perspective: 1200px; }
+.fc-inner   { transform-style: preserve-3d; transition: transform .55s cubic-bezier(.4,0,.2,1); }
+.fc-inner.flipped { transform: rotateY(180deg); }
+.fc-face    { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.fc-back    { transform: rotateY(180deg); }
+
+/* Hover effects */
+.hover-lift  { transition: transform .22s ease, box-shadow .22s ease; }
+.hover-lift:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,.4); }
+.hover-glow  { transition: box-shadow .22s ease, border-color .22s ease; }
+.hover-glow:hover { box-shadow: 0 0 24px rgba(0,245,160,.12); border-color: rgba(0,245,160,.35) !important; }
+
+/* Typewriter */
+.typewriter {
+  overflow: hidden; white-space: nowrap; border-right: 2px solid var(--a);
+  animation: typewriter 2s steps(40,end), blink .75s step-end infinite;
+}
+
+/* Progress bar */
+.prog-fill { transition: width .8s cubic-bezier(.4,0,.2,1); }
+/* ══════════════════════════════════════
+   QUIZ COMPONENTS
+   ══════════════════════════════════════ */
+.quiz-shell { background: var(--s1); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.quiz-topbar { display: flex; justify-content: space-between; align-items: center; padding: 14px 22px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px; background: var(--s2); }
+.quiz-prog-wrap { flex: 1; min-width: 140px; }
+.quiz-prog-lbl  { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 1px; margin-bottom: 6px; }
+.quiz-prog-bar  { height: 4px; background: var(--border); border-radius: 10px; overflow: hidden; }
+.quiz-prog-fill { height: 100%; background: linear-gradient(90deg,var(--a),var(--a2)); border-radius: 10px; transition: width .4s ease; }
+.quiz-score     { font-family: var(--mono); font-size: 12px; color: var(--a); }
+.quiz-timer     { font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--gold); }
+.quiz-timer.urgent { color: var(--a3); animation: pulse .5s infinite; }
+
+.q-card   { padding: 28px; }
+.q-num    { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 2px; margin-bottom: 10px; }
+.q-text   { font-size: 18px; line-height: 1.55; margin-bottom: 22px; font-weight: 600; }
+.options  { display: flex; flex-direction: column; gap: 9px; }
+.opt {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 18px; background: var(--s2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text); font-size: 15px;
+  text-align: left; transition: all .18s;
+}
+.opt:hover:not(:disabled) { border-color: var(--a2); background: var(--a2-dim); }
+.opt:disabled { cursor: default; }
+.opt.correct  { border-color: var(--a);  background: var(--a-dim);  color: var(--a); }
+.opt.wrong    { border-color: var(--a3); background: var(--a3-dim); color: var(--a3); animation: shake .4s ease; }
+.opt-key {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 1px;
+  width: 26px; height: 26px; border-radius: 4px; background: var(--border);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.explanation {
+  display: none; margin-top: 16px; padding: 14px 18px;
+  background: rgba(0,245,160,.05); border: 1px solid rgba(0,245,160,.2);
+  border-radius: var(--radius-sm); font-size: 14px; color: var(--text2); line-height: 1.7;
+}
+.explanation.show { display: block; animation: fadeDown .3s ease; }
+.explanation strong { color: var(--a); }
+.quiz-footer { display: flex; justify-content: space-between; align-items: center; padding: 14px 22px; border-top: 1px solid var(--border); background: var(--s2); }
+.quiz-hint { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 1px; }
+
+/* RESULTS */
+.result-card   { text-align: center; padding: 44px 32px; }
+.result-label  { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 2px; margin-bottom: 8px; }
+.result-pct    { font-family: var(--display); font-size: 90px; line-height: .9; margin: 12px 0; animation: countUp .6s ease; }
+.result-pass   { color: var(--a); }
+.result-fail   { color: var(--a3); }
+.result-neutral{ color: var(--gold); }
+.result-msg    { font-size: 16px; color: var(--text2); margin-bottom: 28px; }
+.result-grid   { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin: 20px 0; }
+.result-cell   { background: var(--s1); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; }
+.rc-num  { font-family: var(--display); font-size: 36px; line-height: 1; }
+.rc-lbl  { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 1px; margin-top: 4px; }
+.gate-box { border-radius: var(--radius-sm); padding: 14px 18px; margin-top: 14px; font-family: var(--mono); font-size: 11px; line-height: 1.7; }
+.gate-pass { background: var(--a-dim);  border: 1px solid rgba(0,245,160,.3); color: var(--a); }
+.gate-fail { background: var(--a3-dim); border: 1px solid rgba(255,95,126,.3); color: var(--a3); }
+
+/* ══════════════════════════════════════
+   QUESTION BANK
+   ══════════════════════════════════════ */
+.q-item { background: var(--s2); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 7px; overflow: hidden; transition: border-color .2s; }
+.q-item:hover { border-color: var(--border2); }
+.q-head { display: flex; align-items: flex-start; gap: 12px; padding: 15px 18px; cursor: pointer; }
+.q-question { font-size: 15px; line-height: 1.5; flex: 1; }
+.q-meta { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+.q-arrow { font-family: var(--mono); font-size: 11px; color: var(--muted); flex-shrink: 0; margin-top: 2px; }
+.q-answer { display: none; padding: 16px 18px 18px; font-size: 14px; color: var(--text2); line-height: 1.8; border-top: 1px solid var(--border); }
+.q-answer.open { display: block; animation: fadeDown .25s ease; }
+.q-answer strong { color: var(--a); }
+.q-answer code { font-family: var(--mono); font-size: 12px; background: var(--a2-dim); color: var(--a2); padding: 2px 6px; border-radius: 3px; }
+.q-answer pre { font-family: var(--mono); font-size: 12px; background: var(--s1); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; margin: 10px 0; color: var(--a2); overflow-x: auto; line-height: 1.7; }
+.q-answer ul { padding-left: 20px; margin: 8px 0; }
+.q-answer li { margin-bottom: 5px; }
+
+/* ══════════════════════════════════════
+   ROADMAP
+   ══════════════════════════════════════ */
+.week-block { display: grid; grid-template-columns: 72px 1fr; margin-bottom: 4px; cursor: pointer; }
+.week-num { display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--display); font-size: 30px; color: white; line-height: 1; padding: 20px 4px; }
+.week-num small { font-family: var(--mono); font-size: 8px; letter-spacing: 2px; opacity: .6; margin-top: 3px; }
+.week-body { background: var(--s2); border: 1px solid var(--border); border-left: none; padding: 18px 22px; transition: background .2s; }
+.week-block:hover .week-body { background: var(--s3); }
+.week-tag   { font-family: var(--mono); font-size: 9px; color: var(--a); letter-spacing: 2px; margin-bottom: 5px; }
+.week-title { font-family: var(--display); font-size: 22px; letter-spacing: 1px; }
+.week-tasks { display: none; margin-top: 16px; border-top: 1px solid var(--border); padding-top: 16px; animation: fadeDown .3s ease; }
+.week-tasks.open { display: block; }
+.day-row { display: grid; grid-template-columns: 64px 1fr; gap: 10px; margin-bottom: 10px; font-size: 14px; color: var(--text2); }
+.day-lbl { font-family: var(--mono); font-size: 10px; color: var(--muted); padding-top: 2px; letter-spacing: 1px; }
+.deliverable { font-family: var(--mono); font-size: 10px; color: var(--a); background: var(--a-dim); border: 1px solid rgba(0,245,160,.2); padding: 8px 12px; border-radius: 3px; margin-top: 12px; letter-spacing: .5px; }
+.pace-bar { display: flex; align-items: center; gap: 14px; background: var(--s2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 22px; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.toggle-switch { position: relative; width: 46px; height: 24px; flex-shrink: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-track { position: absolute; inset: 0; background: var(--border2); border-radius: 24px; cursor: pointer; transition: .3s; }
+.toggle-track::before { content: ''; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px; background: var(--muted); border-radius: 50%; transition: .3s; }
+input:checked + .toggle-track { background: var(--a); }
+input:checked + .toggle-track::before { transform: translateX(22px); background: var(--bg); }
+
+/* ══════════════════════════════════════
+   TRACKER GRID
+   ══════════════════════════════════════ */
+.tracker-week { background: var(--s2); border: 1px solid var(--border); margin-bottom: 4px; }
+.tracker-week-head { background: var(--s1); padding: 8px 14px; display: flex; justify-content: space-between; align-items: center; }
+.tracker-week-lbl { font-family: var(--display); font-size: 15px; letter-spacing: 1px; color: var(--gold); }
+.tracker-days { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; padding: 8px; }
+.tracker-day { padding: 10px 4px; text-align: center; cursor: pointer; border: 1px solid var(--border); border-radius: 4px; transition: all .15s; display: flex; flex-direction: column; align-items: center; gap: 3px; user-select: none; }
+.tracker-day:hover { background: var(--s3); border-color: var(--border2); }
+.tracker-day.done { background: var(--a-dim); border-color: rgba(0,245,160,.35); }
+.tracker-day.locked { opacity: .35; cursor: not-allowed; }
+.tracker-day.today { border-color: var(--gold); }
+.td-num  { font-family: var(--mono); font-size: 9px; color: var(--muted); }
+.td-icon { font-size: 15px; min-height: 20px; }
+
+/* ══════════════════════════════════════
+   TIPS
+   ══════════════════════════════════════ */
+.tip-card { background: var(--s2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; transition: all .22s; }
+.tip-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--border2); }
+.tip-cat { display: inline-block; font-family: var(--mono); font-size: 9px; letter-spacing: 1.5px; padding: 3px 9px; border-radius: 2px; margin-bottom: 8px; }
+.tip-title { font-family: var(--display); font-size: 18px; letter-spacing: 1px; margin-bottom: 8px; }
+.tip-body  { font-size: 13px; color: var(--text2); line-height: 1.7; }
+.tip-body code { font-family: var(--mono); font-size: 11px; background: var(--a2-dim); color: var(--a2); padding: 1px 5px; border-radius: 2px; }
+
+/* ══════════════════════════════════════
+   FLASHCARD
+   ══════════════════════════════════════ */
+.fc-wrap  { height: 170px; cursor: pointer; margin-bottom: 12px; }
+.fc-inner { width: 100%; height: 100%; position: relative; }
+.fc-face  { position: absolute; inset: 0; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; padding: 20px; text-align: center; font-size: 15px; line-height: 1.5; }
+.fc-front { background: var(--s2); border: 1px solid var(--border); font-weight: 600; }
+.fc-back  { background: rgba(0,245,160,.05); border: 1px solid rgba(0,245,160,.3); color: var(--a); font-size: 13px; }
+.fc-hint  { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 1px; text-align: center; margin-bottom: 8px; }
+
+/* ══════════════════════════════════════
+   ANIMAL / EXPLAIN
+   ══════════════════════════════════════ */
+.animal-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 18px; }
+.animal-card { background: var(--s2); border: 2px solid var(--border); border-radius: var(--radius); padding: 18px; text-align: center; cursor: pointer; transition: all .22s; }
+.animal-card:hover, .animal-card.sel { border-color: var(--a); background: var(--a-dim); transform: scale(1.03); }
+.animal-emoji { font-size: 36px; margin-bottom: 8px; display: block; }
+.animal-name  { font-family: var(--display); font-size: 15px; letter-spacing: 1px; }
+.animal-sub   { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.age-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.age-btn { font-family: var(--mono); font-size: 10px; padding: 7px 14px; border: 1px solid var(--border); background: var(--s2); color: var(--muted); border-radius: 3px; transition: all .2s; }
+.age-btn:hover, .age-btn.sel { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+.explain-box { background: var(--s1); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; font-size: 15px; line-height: 1.8; color: var(--text2); min-height: 80px; }
+
+/* ══════════════════════════════════════
+   NOTES / COMMUNITY
+   ══════════════════════════════════════ */
+.note-card { background: var(--s2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; margin-bottom: 10px; }
+.note-author { font-family: var(--mono); font-size: 10px; color: var(--a); letter-spacing: 1px; margin-bottom: 4px; }
+.note-text   { font-size: 14px; color: var(--text2); line-height: 1.6; }
+.note-meta   { font-family: var(--mono); font-size: 9px; color: var(--muted); margin-top: 8px; display: flex; gap: 12px; }
+
+/* ══════════════════════════════════════
+   CAREER SWITCHER
+   ══════════════════════════════════════ */
+.career-card { background: var(--s2); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; cursor: pointer; transition: all .22s; }
+.career-card:hover { border-color: var(--a2); transform: translateY(-3px); box-shadow: var(--shadow); }
+.career-icon  { font-size: 32px; margin-bottom: 10px; }
+.career-from  { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 1.5px; margin-bottom: 4px; }
+.career-title { font-family: var(--display); font-size: 22px; letter-spacing: 1px; margin-bottom: 6px; }
+.career-desc  { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+/* ══════════════════════════════════════
+   ACHIEVEMENTS
+   ══════════════════════════════════════ */
+.ach-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(120px,1fr)); gap: 12px; }
+.ach { background: var(--s2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; text-align: center; transition: all .2s; }
+.ach.earned { border-color: var(--gold); background: var(--gold-dim); }
+.ach.locked { opacity: .4; filter: grayscale(1); }
+.ach-icon { font-size: 28px; margin-bottom: 6px; }
+.ach-name { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: .5px; }
+.ach.earned .ach-name { color: var(--gold); }
+
+/* ══════════════════════════════════════
+   HEATMAP
+   ══════════════════════════════════════ */
+.heatmap { display: flex; gap: 3px; flex-wrap: wrap; }
+.hm-day { width: 14px; height: 14px; border-radius: 2px; background: var(--border); transition: background .2s; cursor: default; }
+.hm-day.l1 { background: rgba(0,245,160,.2); }
+.hm-day.l2 { background: rgba(0,245,160,.45); }
+.hm-day.l3 { background: rgba(0,245,160,.7); }
+.hm-day.l4 { background: var(--a); }
+
+/* ══════════════════════════════════════
+   LEADERBOARD
+   ══════════════════════════════════════ */
+.lb-row { display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: var(--s2); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 6px; transition: all .2s; }
+.lb-row:hover { border-color: var(--border2); }
+.lb-rank { font-family: var(--display); font-size: 24px; width: 36px; text-align: center; flex-shrink: 0; }
+.lb-rank.gold   { color: var(--gold); }
+.lb-rank.silver { color: var(--text2); }
+.lb-rank.bronze { color: var(--orange); }
+.lb-name  { flex: 1; font-weight: 600; }
+.lb-score { font-family: var(--mono); font-size: 13px; color: var(--a); }
+
+/* ══════════════════════════════════════
+   WORD SCRAMBLE
+   ══════════════════════════════════════ */
+.scramble-word  { font-family: var(--display); font-size: 52px; letter-spacing: 10px; color: var(--a); text-align: center; padding: 28px; }
+.scramble-input { font-family: var(--mono); font-size: 18px; text-align: center; letter-spacing: 4px; text-transform: uppercase; }
+
+/* ══════════════════════════════════════
+   DAILY BRIEFING
+   ══════════════════════════════════════ */
+.brief-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 14px; margin-bottom: 24px; }
+.brief-card { background: var(--s2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+.brief-icon { font-size: 22px; margin-bottom: 8px; }
+.brief-lbl  { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 1.5px; margin-bottom: 4px; }
+.brief-val  { font-size: 15px; font-weight: 600; line-height: 1.4; }
+
+/* ══════════════════════════════════════
+   JARGON BUSTER
+   ══════════════════════════════════════ */
+.jargon-item { background: var(--s2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; cursor: pointer; transition: all .2s; }
+.jargon-item:hover { border-color: var(--a2); }
+.jargon-term { font-family: var(--mono); font-size: 12px; color: var(--a2); letter-spacing: 1px; margin-bottom: 4px; }
+.jargon-def  { font-size: 13px; color: var(--muted); display: none; margin-top: 6px; line-height: 1.5; }
+.jargon-def.open { display: block; animation: fadeDown .2s ease; }
+
+/* ══════════════════════════════════════
+   BENCHMARK
+   ══════════════════════════════════════ */
+.rank-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 18px; border-radius: 99px; font-family: var(--mono); font-size: 12px; letter-spacing: 1px; font-weight: 700; }
+.rank-beginner { background: var(--muted2); color: var(--text2); }
+.rank-junior   { background: var(--a-dim);      color: var(--a);      border: 1px solid rgba(0,245,160,.3); }
+.rank-mid      { background: var(--gold-dim);   color: var(--gold);   border: 1px solid rgba(255,209,102,.3); }
+.rank-senior   { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(192,132,252,.3); }
+.rank-expert   { background: linear-gradient(135deg,var(--a-dim),var(--a2-dim)); color: var(--a); border: 1px solid rgba(0,245,160,.4); }
+
+/* ══════════════════════════════════════
+   SALARY
+   ══════════════════════════════════════ */
+.salary-result { background: var(--s1); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; text-align: center; margin-top: 20px; }
+.salary-range  { font-family: var(--display); font-size: 48px; color: var(--a); letter-spacing: 2px; }
+.salary-lbl    { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 2px; margin-top: 4px; }
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════ */
+@media (max-width: 768px) {
+  .animal-grid { grid-template-columns: repeat(2,1fr); }
+  .result-grid { grid-template-columns: 1fr 1fr; }
+  .week-block  { grid-template-columns: 56px 1fr; }
+  .week-num    { font-size: 22px; padding: 16px 2px; }
+  .tracker-days { grid-template-columns: repeat(7,1fr); gap: 2px; padding: 4px; }
+  .brief-grid  { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .animal-grid { grid-template-columns: 1fr 1fr; }
+  .ach-grid    { grid-template-columns: repeat(3,1fr); }
+}
+
+
+
+/* ── BA PAGE SPECIFIC ── */
+:root {
+  --ba:     #4d8fff;
+  --ba2:    #c084fc;
+  --ba3:    #ffd166;
+  --ba-dim: rgba(77,143,255,.1);
+}
+
+.ba-hero {
+  background: linear-gradient(135deg, var(--s1) 0%, rgba(77,143,255,.08) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 60px 20px 50px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.ba-hero::before {
+  content: 'BA';
+  position: absolute; right: -20px; top: -10px;
+  font-family: var(--display); font-size: 260px;
+  color: rgba(77,143,255,.04); letter-spacing: 4px;
+  pointer-events: none; line-height: 1;
+}
+.ba-eyebrow {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 3px;
+  color: var(--ba); border: 1px solid rgba(77,143,255,.35);
+  padding: 5px 16px; border-radius: 2px;
+  display: inline-block; margin-bottom: 22px;
+}
+.ba-title {
+  font-family: var(--display);
+  font-size: clamp(48px, 9vw, 100px);
+  line-height: .88; letter-spacing: 2px; margin-bottom: 16px;
+}
+.ba-title em { color: var(--ba); font-style: normal; display: block; }
+.ba-sub {
+  color: var(--text2); font-size: 16px;
+  max-width: 620px; margin: 0 auto 32px; line-height: 1.7;
+}
+.ba-stats {
+  display: flex; justify-content: center; gap: 44px; flex-wrap: wrap;
+  margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border);
+}
+.ba-stat-n { font-family: var(--display); font-size: 48px; line-height: 1; color: var(--ba); }
+.ba-stat-l { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 2px; margin-top: 4px; }
+
+/* ROLE TABS */
+.role-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.role-tab {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px;
+  padding: 9px 18px; background: var(--s2); border: 1px solid var(--border);
+  color: var(--muted); cursor: pointer; border-radius: 3px; transition: all .2s;
+}
+.role-tab:hover, .role-tab.active {
+  border-color: var(--ba); color: var(--ba);
+  background: rgba(77,143,255,.08);
+}
+
+/* SKILL CARDS */
+.skill-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 13px; padding: 8px 14px;
+  background: var(--s3); border: 1px solid var(--border);
+  border-radius: 4px; margin: 4px;
+}
+.skill-pill.must { border-color: rgba(77,143,255,.4); color: var(--ba); }
+.skill-pill.good { border-color: rgba(192,132,252,.4); color: var(--ba2); }
+.skill-pill.plus { border-color: rgba(255,209,102,.4); color: var(--ba3); }
+
+/* PHASE CARDS */
+.phase-card {
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; margin-bottom: 12px;
+  cursor: pointer; transition: border-color .2s;
+}
+.phase-card:hover { border-color: var(--border2); }
+.phase-head {
+  display: flex; align-items: center; gap: 16px; padding: 20px 24px;
+}
+.phase-num {
+  font-family: var(--display); font-size: 36px; color: var(--ba);
+  flex-shrink: 0; width: 40px; text-align: center;
+}
+.phase-info { flex: 1; }
+.phase-title { font-family: var(--display); font-size: 22px; letter-spacing: 1px; }
+.phase-meta { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 3px; letter-spacing: 1px; }
+.phase-arrow { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.phase-body { display: none; padding: 0 24px 22px; border-top: 1px solid var(--border); }
+.phase-body.open { display: block; }
+.phase-day-row {
+  display: flex; gap: 14px; padding: 10px 0;
+  border-bottom: 1px solid var(--border); font-size: 14px;
+}
+.phase-day-lbl {
+  font-family: var(--mono); font-size: 10px; color: var(--ba);
+  letter-spacing: 1px; flex-shrink: 0; width: 80px; padding-top: 2px;
+}
+.deliverable-box {
+  background: rgba(77,143,255,.08); border: 1px solid rgba(77,143,255,.2);
+  border-radius: 6px; padding: 12px 16px; margin-top: 14px;
+  font-family: var(--mono); font-size: 12px; color: var(--ba); line-height: 1.6;
+}
+
+/* TOOL CARDS */
+.tool-card {
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 18px;
+  transition: all .22s;
+}
+.tool-card:hover { border-color: var(--ba); transform: translateY(-2px); }
+.tool-icon { font-size: 28px; margin-bottom: 8px; }
+.tool-name { font-family: var(--display); font-size: 18px; letter-spacing: 1px; margin-bottom: 5px; }
+.tool-cat { font-family: var(--mono); font-size: 9px; letter-spacing: 1.5px; }
+.tool-cat.must-know { color: var(--ba); }
+.tool-cat.good-to-know { color: var(--ba2); }
+.tool-cat.ai-era { color: var(--a); }
+
+/* QA ITEMS */
+.ba-q-item {
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden;
+}
+.ba-q-head {
+  padding: 16px 20px; cursor: pointer;
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 12px;
+}
+.ba-q-head:hover { background: rgba(77,143,255,.04); }
+.ba-q-text { font-size: 15px; line-height: 1.5; flex: 1; }
+.ba-q-arrow { font-family: var(--mono); font-size: 12px; color: var(--muted); flex-shrink: 0; }
+.ba-q-ans {
+  display: none; padding: 0 20px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 14px; line-height: 1.8; color: var(--text2);
+}
+.ba-q-ans.open { display: block; }
+.ba-q-ans strong { color: var(--ba); }
+.ba-q-ans code {
+  font-family: var(--mono); font-size: 12px;
+  background: rgba(77,143,255,.1); color: var(--ba);
+  padding: 2px 6px; border-radius: 3px;
+}
+
+/* AI PROMPT CARDS */
+.prompt-card {
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 18px; margin-bottom: 10px;
+}
+.prompt-scenario { font-family: var(--mono); font-size: 10px; color: var(--a); letter-spacing: 1.5px; margin-bottom: 8px; }
+.prompt-text {
+  font-family: var(--mono); font-size: 12px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 4px; padding: 12px 14px;
+  color: var(--a2); line-height: 1.7; cursor: pointer;
+  transition: border-color .2s;
+}
+.prompt-text:hover { border-color: var(--a2); }
+
+/* SALARY TABLE */
+.salary-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.salary-table th {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px;
+  color: var(--muted); padding: 10px 16px; text-align: left;
+  border-bottom: 1px solid var(--border); background: var(--s3);
+}
+.salary-table td {
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  color: var(--text2);
+}
+.salary-table tr:hover td { background: rgba(77,143,255,.04); }
+.salary-highlight { color: var(--ba); font-weight: 700; font-family: var(--mono); }
+
+/* COMPARISON TABLE */
+.compare-table { width: 100%; border-collapse: collapse; }
+.compare-table th {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px;
+  color: var(--muted); padding: 10px 16px; text-align: left;
+  background: var(--s3); border-bottom: 1px solid var(--border);
+}
+.compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 13px; }
+.compare-table tr:hover td { background: rgba(77,143,255,.03); }
+
+/* CERT CARDS */
+.cert-card {
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 18px;
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.cert-badge { font-size: 28px; flex-shrink: 0; }
+.cert-name { font-family: var(--display); font-size: 17px; letter-spacing: 1px; margin-bottom: 4px; }
+.cert-body { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+/* NAV TABS (sub-nav inside page) */
+.sub-nav {
+  display: flex; gap: 0; border-bottom: 1px solid var(--border);
+  margin-bottom: 30px; overflow-x: auto; scrollbar-width: none;
+  position: sticky; top: 52px; background: var(--bg); z-index: 100;
+  padding: 0 0 0 0;
+}
+.sub-nav::-webkit-scrollbar { display: none; }
+.sub-nav-btn {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px;
+  padding: 14px 18px; color: var(--muted); cursor: pointer;
+  border: none; background: none; white-space: nowrap;
+  border-bottom: 2px solid transparent; transition: all .2s;
+}
+.sub-nav-btn:hover, .sub-nav-btn.active { color: var(--ba); border-bottom-color: var(--ba); }
+
+.ba-section { display: none; }
+.ba-section.active { display: block; }
+
+
+/* NAV link hover */
+.nav-link:hover { color: var(--a) !important; border-bottom-color: var(--a) !important; }
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<nav style="position:sticky;top:0;z-index:200;display:flex;align-items:center;gap:0;background:rgba(7,8,13,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 20px;height:52px;overflow-x:auto">
+  <div style="font-family:var(--display);font-size:20px;letter-spacing:2px;color:var(--text);white-space:nowrap;margin-right:20px;flex-shrink:0">LEARN <em style="color:var(--a);font-style:normal">DATA ANALYTICS</em></div>
+  <div style="display:flex;gap:2px;flex:1;overflow-x:auto">
+    <a href="#" class="nav-link active" style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;padding:0 14px;height:52px;display:flex;align-items:center;color:var(--a);border-bottom:2px solid var(--a);white-space:nowrap">🏠 HOME</a>
+    <a href="#" class="nav-link" style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;padding:0 14px;height:52px;display:flex;align-items:center;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap">🗺 ROADMAP</a>
+    <a href="#" class="nav-link" style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;padding:0 14px;height:52px;display:flex;align-items:center;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap">📚 QUESTIONS</a>
+    <a href="#" class="nav-link" style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;padding:0 14px;height:52px;display:flex;align-items:center;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap">🔒 QUIZ</a>
+    <a href="#" class="nav-link" style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;padding:0 14px;height:52px;display:flex;align-items:center;color:var(--a2);border-bottom:2px solid var(--a2);font-weight:700;white-space:nowrap">💼 BUSINESS ANALYST ★</a>
+    <a href="#" class="nav-link" style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;padding:0 14px;height:52px;display:flex;align-items:center;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap">🤖 AI TUTOR</a>
+    <a href="#" class="nav-link" style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;padding:0 14px;height:52px;display:flex;align-items:center;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap">🏆 BENCHMARK</a>
+    <a href="#" class="nav-link" style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;padding:0 14px;height:52px;display:flex;align-items:center;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap">🔄 CAREER</a>
+    <a href="#" class="nav-link" style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;padding:0 14px;height:52px;display:flex;align-items:center;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap">💼 JOBS</a>
+  </div>
+  <div style="display:flex;gap:16px;flex-shrink:0;font-family:var(--mono);font-size:11px;margin-left:16px;padding-left:16px;border-left:1px solid var(--border)">
+    <span style="color:var(--gold)" id="nav-streak">🔥 0</span>
+    <span style="color:var(--purple)" id="nav-xp">⚡ 0 XP</span>
+    <span style="color:var(--a)" id="nav-lv">LV.1</span>
+  </div>
+</nav>
+
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<nav id="main-nav"></nav>
+
+<!-- HERO -->
+<div class="ba-hero">
+  <div class="ba-eyebrow">// 0 TO MASTER · BUSINESS ANALYST</div>
+  <h1 class="ba-title">BUSINESS<em>ANALYST</em></h1>
+  <p class="ba-sub">The complete guide — roadmap, skills, tools, AI workflows, interview prep, salary, and certification. Everything in one place, no fluff.</p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+    <button class="btn btn-primary btn-lg" onclick="goSection('roadmap')">VIEW ROADMAP →</button>
+    <button class="btn btn-lg" onclick="goSection('interview')">INTERVIEW PREP</button>
+    <button class="btn btn-lg" onclick="goSection('ai')">AI TOOLS FOR BA</button>
+  </div>
+  <div class="ba-stats">
+    <div><div class="ba-stat-n">8</div><div class="ba-stat-l">WEEK ROADMAP</div></div>
+    <div><div class="ba-stat-n">60+</div><div class="ba-stat-l">BA QUESTIONS</div></div>
+    <div><div class="ba-stat-n">30+</div><div class="ba-stat-l">AI PROMPTS</div></div>
+    <div><div class="ba-stat-n">₹8–40L</div><div class="ba-stat-l">SALARY RANGE</div></div>
+  </div>
+</div>
+
+<!-- SUB NAV -->
+<div class="sub-nav">
+  <button class="sub-nav-btn active" onclick="goSection('overview')">📋 OVERVIEW</button>
+  <button class="sub-nav-btn" onclick="goSection('roadmap')">🗺 ROADMAP</button>
+  <button class="sub-nav-btn" onclick="goSection('skills')">🧠 SKILLS</button>
+  <button class="sub-nav-btn" onclick="goSection('tools')">🔧 TOOLS</button>
+  <button class="sub-nav-btn" onclick="goSection('ai')">🤖 AI ERA</button>
+  <button class="sub-nav-btn" onclick="goSection('interview')">💬 INTERVIEW</button>
+  <button class="sub-nav-btn" onclick="goSection('salary')">💰 SALARY</button>
+  <button class="sub-nav-btn" onclick="goSection('certs')">🏆 CERTIFICATIONS</button>
+  <button class="sub-nav-btn" onclick="goSection('resources')">📚 RESOURCES</button>
+  <button class="sub-nav-btn" onclick="goSection('vsda')">⚖️ BA vs DA</button>
+</div>
+
+<div class="wrap">
+
+<!-- ══════════════════════════════════════════════
+     SECTION: OVERVIEW
+══════════════════════════════════════════════ -->
+<div class="ba-section active" id="sec-overview">
+  <div class="sec-head"><span class="sec-num">00</span><h2 class="sec-title">WHAT IS A BUSINESS ANALYST?</h2><div class="sec-line"></div></div>
+  <p style="font-size:16px;color:var(--text2);line-height:1.8;margin-bottom:24px;max-width:760px">A Business Analyst (BA) is the bridge between business stakeholders and technical teams. They understand what the business needs, translate those needs into requirements, and ensure solutions actually solve the right problems.</p>
+
+  <div class="grid3" style="gap:14px;margin-bottom:32px">
+    <div class="card" style="border-color:rgba(77,143,255,.3)">
+      <div style="font-size:28px;margin-bottom:8px">🎯</div>
+      <div style="font-family:var(--display);font-size:18px;letter-spacing:1px;margin-bottom:6px">WHAT THEY DO</div>
+      <ul style="font-size:13px;color:var(--text2);line-height:1.9;padding-left:14px;list-style:disc">
+        <li>Gather & document requirements</li>
+        <li>Analyse business processes</li>
+        <li>Map stakeholder needs to solutions</li>
+        <li>Write user stories & use cases</li>
+        <li>Facilitate workshops & meetings</li>
+        <li>Validate solutions before delivery</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(192,132,252,.3)">
+      <div style="font-size:28px;margin-bottom:8px">🏢</div>
+      <div style="font-family:var(--display);font-size:18px;letter-spacing:1px;margin-bottom:6px">WHERE THEY WORK</div>
+      <ul style="font-size:13px;color:var(--text2);line-height:1.9;padding-left:14px;list-style:disc">
+        <li>IT & Software companies</li>
+        <li>Banking & Financial services</li>
+        <li>Consulting firms (Big 4, MBB)</li>
+        <li>E-commerce & Retail</li>
+        <li>Healthcare & Pharma</li>
+        <li>Government & Public sector</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(0,245,160,.3)">
+      <div style="font-size:28px;margin-bottom:8px">📈</div>
+      <div style="font-family:var(--display);font-size:18px;letter-spacing:1px;margin-bottom:6px">CAREER GROWTH</div>
+      <ul style="font-size:13px;color:var(--text2);line-height:1.9;padding-left:14px;list-style:disc">
+        <li>Junior BA → BA → Senior BA</li>
+        <li>Lead BA / Principal BA</li>
+        <li>Product Manager / Owner</li>
+        <li>Solutions Architect</li>
+        <li>Management Consultant</li>
+        <li>Chief of Staff / COO</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BA TYPES -->
+  <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">TYPES OF BUSINESS ANALYSTS</h2><div class="sec-line"></div></div>
+  <div class="role-tabs" id="roleTabsEl">
+    <button class="role-tab active" onclick="showRole('it',this)">IT / Systems BA</button>
+    <button class="role-tab" onclick="showRole('data',this)">Data BA</button>
+    <button class="role-tab" onclick="showRole('product',this)">Product BA</button>
+    <button class="role-tab" onclick="showRole('process',this)">Process BA</button>
+    <button class="role-tab" onclick="showRole('finance',this)">Finance BA</button>
+  </div>
+  <div id="roleDetail" style="background:var(--s2);border:1px solid var(--border);border-radius:var(--radius);padding:24px"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: ROADMAP
+══════════════════════════════════════════════ -->
+<div class="ba-section" id="sec-roadmap">
+  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">8-WEEK BA ROADMAP</h2><div class="sec-line"></div></div>
+  <p style="color:var(--text2);font-size:14px;margin-bottom:24px">A structured path from zero to job-ready Business Analyst. Each week has a focus, daily tasks, and a concrete deliverable. Click any week to expand.</p>
+  <div id="ba-weeks"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: SKILLS
+══════════════════════════════════════════════ -->
+<div class="ba-section" id="sec-skills">
+  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">SKILLS YOU NEED</h2><div class="sec-line"></div></div>
+
+  <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+    <span class="skill-pill must">🔵 MUST HAVE</span>
+    <span class="skill-pill good">🟣 GOOD TO HAVE</span>
+    <span class="skill-pill plus">🟡 BIG PLUS</span>
+  </div>
+
+  <div class="grid2" style="gap:20px" id="skills-grid"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: TOOLS
+══════════════════════════════════════════════ -->
+<div class="ba-section" id="sec-tools">
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">TOOLS OF THE TRADE</h2><div class="sec-line"></div></div>
+  <p style="color:var(--text2);font-size:14px;margin-bottom:24px">Every tool a modern BA is expected to know — categorized by domain.</p>
+  <div id="tools-grid"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: AI ERA
+══════════════════════════════════════════════ -->
+<div class="ba-section" id="sec-ai">
+  <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">AI ERA SKILLS FOR BA</h2><div class="sec-line"></div></div>
+  <p style="color:var(--text2);font-size:14px;margin-bottom:24px">AI has changed what a BA does. Here's what a modern AI-enabled BA looks like — and the exact prompts to use.</p>
+
+  <div class="alert" style="background:rgba(0,245,160,.08);border:1px solid rgba(0,245,160,.25);border-radius:var(--radius-sm);padding:16px 20px;margin-bottom:24px;font-size:14px;color:var(--text2);line-height:1.7">
+    💡 <strong style="color:var(--a)">The 2025 BA advantage:</strong> BAs who use AI do in 2 hours what used to take 2 days. Requirements docs, process maps, user stories, stakeholder summaries — all AI-assisted. Your job is to guide, review, and add context. Not to type everything from scratch.
+  </div>
+
+  <div class="sec-head"><span class="sec-num">05A</span><h2 class="sec-title" style="font-size:24px">AI USE CASES FOR BA</h2><div class="sec-line"></div></div>
+  <div class="grid-auto" id="ai-usecases" style="margin-bottom:36px"></div>
+
+  <div class="sec-head"><span class="sec-num">05B</span><h2 class="sec-title" style="font-size:24px">COPY-PASTE AI PROMPTS</h2><div class="sec-line"></div></div>
+  <p style="color:var(--text2);font-size:13px;margin-bottom:16px">Click any prompt to copy it. Replace [brackets] with your specifics.</p>
+  <div id="ai-prompts"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: INTERVIEW
+══════════════════════════════════════════════ -->
+<div class="ba-section" id="sec-interview">
+  <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">INTERVIEW PREP</h2><div class="sec-line"></div></div>
+
+  <div class="tabs" id="interview-tabs" style="margin-bottom:16px">
+    <button class="tab active" onclick="setITab('concepts',this)">CONCEPTS</button>
+    <button class="tab" onclick="setITab('process',this)">PROCESS</button>
+    <button class="tab" onclick="setITab('behav',this)">BEHAVIOURAL</button>
+    <button class="tab" onclick="setITab('case',this)">CASE STUDY</button>
+    <button class="tab" onclick="setITab('technical',this)">TECHNICAL</button>
+  </div>
+
+  <div id="interview-qs"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: SALARY
+══════════════════════════════════════════════ -->
+<div class="ba-section" id="sec-salary">
+  <div class="sec-head"><span class="sec-num">07</span><h2 class="sec-title">SALARY & COMPENSATION</h2><div class="sec-line"></div></div>
+  <div id="salary-section"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: CERTIFICATIONS
+══════════════════════════════════════════════ -->
+<div class="ba-section" id="sec-certs">
+  <div class="sec-head"><span class="sec-num">08</span><h2 class="sec-title">CERTIFICATIONS</h2><div class="sec-line"></div></div>
+  <p style="color:var(--text2);font-size:14px;margin-bottom:20px">Ranked by value vs effort. The right cert at the right time can open doors — but experience always beats paper.</p>
+  <div id="certs-list"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: RESOURCES
+══════════════════════════════════════════════ -->
+<div class="ba-section" id="sec-resources">
+  <div class="sec-head"><span class="sec-num">09</span><h2 class="sec-title">FREE RESOURCES</h2><div class="sec-line"></div></div>
+  <div id="resources-grid"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: BA vs DA
+══════════════════════════════════════════════ -->
+<div class="ba-section" id="sec-vsda">
+  <div class="sec-head"><span class="sec-num">10</span><h2 class="sec-title">BUSINESS ANALYST vs DATA ANALYST</h2><div class="sec-line"></div></div>
+  <p style="color:var(--text2);font-size:14px;margin-bottom:20px">The most confused pair in tech. Here's the honest breakdown — and how to decide which is right for you.</p>
+  <div id="vs-table"></div>
+  <div id="vs-verdict" style="margin-top:24px"></div>
+</div>
+
+</div><!-- /wrap -->
+
+
+
+<script>
+// ═══════════════════════════════════════════════════════
+// data.js — ALL content. Edit here to add/change anything
+// ═══════════════════════════════════════════════════════
+
+/* ── QUESTION BANK ──
+   cats: sql | python | excel | stats | powerbi | ml | ds | ai | case | behav
+   diff: easy | medium | hard                                              */
+const QUESTIONS = [
+  // ── SQL ──
+  {cat:'sql',diff:'easy',q:'What is the difference between WHERE and HAVING?',a:`<strong>WHERE</strong> filters rows <em>before</em> grouping. <strong>HAVING</strong> filters groups <em>after</em> GROUP BY.<br><pre>-- Filter rows first, then group
+SELECT dept, COUNT(*) FROM employees
+WHERE salary > 50000
+GROUP BY dept;
+-- Filter the resulting groups
+SELECT dept, AVG(salary) as avg
+FROM employees GROUP BY dept
+HAVING AVG(salary) > 60000;</pre>Memory trick: WHERE = row level, HAVING = group level.`},
+  {cat:'sql',diff:'easy',q:'UNION vs UNION ALL — what is the difference?',a:`<strong>UNION</strong> removes duplicates (slower — must sort and compare).<br><strong>UNION ALL</strong> keeps all rows including duplicates (faster).<br><br>Use UNION ALL by default unless you need deduplication. Can be 2–5× faster on large datasets. Both require matching column counts and compatible types.`},
+  {cat:'sql',diff:'easy',q:'Explain the different types of JOINs.',a:`<strong>INNER JOIN:</strong> Only matching rows from both tables.<br><strong>LEFT JOIN:</strong> All left + matching right (NULL where no match).<br><strong>RIGHT JOIN:</strong> All right + matching left.<br><strong>FULL OUTER JOIN:</strong> All rows from both, NULLs where no match.<br><strong>CROSS JOIN:</strong> Every combination (cartesian product).<br><strong>SELF JOIN:</strong> Table joined to itself (e.g. employee–manager hierarchies).<br><br>In real work: INNER and LEFT JOIN cover 95% of cases.`},
+  {cat:'sql',diff:'medium',q:'What are CTEs and when should you use them over subqueries?',a:`A CTE (Common Table Expression) is a named temporary result defined with <code>WITH name AS (...)</code>.<br><br><strong>Use CTEs when:</strong> You reference the same subquery multiple times, logic needs named steps, writing recursive queries, or readability matters.<br><pre>WITH monthly AS (
+  SELECT DATE_TRUNC('month',created_at) as mo,
+         SUM(revenue) as rev
+  FROM orders GROUP BY 1
+),
+growth AS (
+  SELECT mo, rev,
+    LAG(rev) OVER (ORDER BY mo) as prev
+  FROM monthly
+)
+SELECT mo, rev,
+  ROUND((rev-prev)*100.0/prev,2) as mom_pct
+FROM growth;</pre>`},
+  {cat:'sql',diff:'medium',q:'What are window functions? Explain OVER().',a:`Window functions calculate across related rows without collapsing them like GROUP BY.<br><code>fn() OVER (PARTITION BY col ORDER BY col ROWS BETWEEN ...)</code><br><br><strong>Common functions:</strong><br>• <code>ROW_NUMBER()</code> — unique rank per partition<br>• <code>RANK()</code> — rank with gaps on ties<br>• <code>DENSE_RANK()</code> — rank without gaps<br>• <code>LAG(col,n)</code> / <code>LEAD(col,n)</code> — previous / next row value<br>• <code>SUM() OVER()</code> — running total<br>• <code>NTILE(n)</code> — divide rows into n equal buckets<br><br>Know these cold — they appear in nearly every interview.`},
+  {cat:'sql',diff:'medium',q:'How do you find the top N records per group?',a:`Use ROW_NUMBER() with PARTITION BY:<br><pre>WITH ranked AS (
+  SELECT *,
+    ROW_NUMBER() OVER (
+      PARTITION BY department
+      ORDER BY salary DESC
+    ) as rn
+  FROM employees
+)
+SELECT * FROM ranked WHERE rn <= 3;</pre>Returns top 3 earners per department. Use RANK() if you want ties included.`},
+  {cat:'sql',diff:'hard',q:'How do you write a 7-day rolling average query?',a:`<pre>SELECT date, daily_sales,
+  AVG(daily_sales) OVER (
+    ORDER BY date
+    ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+  ) AS rolling_7day_avg
+FROM daily_sales ORDER BY date;</pre><code>ROWS BETWEEN 6 PRECEDING AND CURRENT ROW</code> = current row + 6 before = 7 days. Used daily to smooth noisy time-series. For gap-aware: <code>RANGE BETWEEN INTERVAL '6 days' PRECEDING AND CURRENT ROW</code>.`},
+  {cat:'sql',diff:'hard',q:'How do you optimize a slow SQL query?',a:`<strong>1. Diagnose first:</strong> Run <code>EXPLAIN ANALYZE</code> — see query plan, slow steps, index usage.<br><br><strong>2. Common fixes:</strong><br>• Add indexes on WHERE/JOIN columns<br>• Replace <code>SELECT *</code> with specific columns<br>• Filter early — reduce rows before joining<br>• Replace correlated subqueries with JOINs<br>• Use <code>EXISTS</code> instead of <code>IN</code> for large subqueries<br>• Avoid functions on indexed columns in WHERE<br>• Use CTEs to materialize complex intermediate steps<br><br>Never optimize without profiling first.`},
+  {cat:'sql',diff:'hard',q:'What are slowly changing dimensions (SCD)?',a:`SCDs are dimensions that change over time — customer address, product price, employee role.<br><br><strong>Type 1:</strong> Overwrite. No history kept. Simple.<br><strong>Type 2:</strong> New row per change with <code>effective_start</code>, <code>effective_end</code>, <code>is_current</code>. Full history — standard in data warehouses.<br><strong>Type 3:</strong> Add "previous value" column. One change tracked only.<br><pre>-- Expire old record
+UPDATE dim_customer
+SET effective_end=CURRENT_DATE, is_current=false
+WHERE customer_id=123 AND is_current=true;
+-- Insert new
+INSERT INTO dim_customer
+VALUES (123,'New Addr',CURRENT_DATE,NULL,true);</pre>Knowing SCD Type 2 signals real data warehousing knowledge.`},
+
+  // ── PYTHON ──
+  {cat:'python',diff:'easy',q:'List vs Tuple vs Set vs Dict — what are the differences?',a:`<strong>List []:</strong> Ordered, mutable, allows duplicates. Use for sequences you modify.<br><strong>Tuple ():</strong> Ordered, immutable, allows duplicates. Faster than list. Fixed data.<br><strong>Set {}:</strong> Unordered, mutable, NO duplicates. Fast membership tests, deduplication.<br><strong>Dict {k:v}:</strong> Key-value pairs, ordered (3.7+), mutable. Use for mappings.<br><br>Deduplicate preserving order: <code>list(dict.fromkeys(my_list))</code>`},
+  {cat:'python',diff:'easy',q:'What are list comprehensions?',a:`Concise one-line list creation — faster and more Pythonic than for-loops.<br><pre>squares  = [x**2 for x in range(10)]
+evens    = [x for x in range(20) if x%2==0]
+sq_dict  = {x: x**2 for x in range(5)}
+flat     = [item for row in matrix for item in row]
+clean    = [s.strip().lower() for s in raw]</pre>Use comprehensions for clarity. Complex logic → regular loop.`},
+  {cat:'python',diff:'medium',q:'Explain .loc[] vs .iloc[] in Pandas.',a:`<strong>.loc[]</strong> — label-based. Uses actual index labels and column names. Inclusive both ends.<br><code>df.loc[0:5, 'salary']</code> — rows labeled 0–5, column 'salary'.<br><br><strong>.iloc[]</strong> — integer position-based. Like Python slicing. Right-exclusive.<br><code>df.iloc[0:5, 2]</code> — first 5 rows, 3rd column.<br><br>Common trap: when index isn't default 0-based integers, .loc and .iloc give different results. In real work, .loc is used more because column names are meaningful.`},
+  {cat:'python',diff:'medium',q:'How does groupby().agg() work? Give an advanced example.',a:`<pre>result = df.groupby('category').agg(
+    total_rev   = ('revenue','sum'),
+    avg_rev     = ('revenue','mean'),
+    orders      = ('order_id','count'),
+    uniq_cust   = ('customer_id','nunique'),
+    p90_order   = ('revenue', lambda x: x.quantile(.9))
+).reset_index()
+
+# Multiple keys
+df.groupby(['region','product'])['revenue'].sum()</pre>Named aggregation <code>(new_col=(src_col, fn))</code> — clean output, no MultiIndex.`},
+  {cat:'python',diff:'hard',q:'How do you build a clean, reusable data pipeline in Python?',a:`Key principles: idempotency, modularity, observability.<br><pre>import pandas as pd, logging
+log = logging.getLogger(__name__)
+
+def extract(path:str) -> pd.DataFrame:
+    df = pd.read_csv(path)
+    log.info(f"Extracted {len(df):,} rows")
+    return df
+
+def transform(df:pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()
+    df.columns = df.columns.str.lower().str.strip()
+    df.drop_duplicates(inplace=True)
+    df.dropna(subset=['id'], inplace=True)
+    df['revenue'] = df['price'] * df['qty']
+    return df
+
+def load(df:pd.DataFrame, dest:str):
+    df.to_parquet(dest, index=False)
+    log.info(f"Loaded {len(df):,} rows → {dest}")
+
+def run(src, dest):
+    load(transform(extract(src)), dest)</pre>`},
+
+  // ── EXCEL / GOOGLE SHEETS ──
+  {cat:'excel',diff:'easy',q:'VLOOKUP — what it does, limitations, and what replaces it.',a:`<code>=VLOOKUP(value, range, col_num, FALSE)</code> — looks up value in first column, returns value from col_num.<br><br><strong>Limitations:</strong> Only looks right, breaks when columns inserted, returns first match only, slow on large data.<br><br><strong>Replacements:</strong><br>• <code>XLOOKUP</code> (Excel 365): <code>=XLOOKUP(val, lookup_range, return_range)</code> — any direction, no column number<br>• <code>INDEX+MATCH</code>: works all versions, faster, any direction`},
+  {cat:'excel',diff:'easy',q:'SUMIF vs SUMIFS — when do you use each?',a:`<strong>SUMIF:</strong> One condition. <code>=SUMIF(range, criteria, sum_range)</code><br>Example: <code>=SUMIF(A:A,"North",C:C)</code><br><br><strong>SUMIFS:</strong> Multiple conditions. Sum_range comes FIRST.<br><code>=SUMIFS(sum_range, range1, crit1, range2, crit2)</code><br>Example: <code>=SUMIFS(C:C,A:A,"North",B:B,"Q1")</code><br><br>Same pattern for COUNTIF/COUNTIFS and AVERAGEIF/AVERAGEIFS. Memorize SUMIFS argument order — it trips people up.`},
+  {cat:'excel',diff:'medium',q:'INDEX + MATCH — how it works and why it beats VLOOKUP.',a:`INDEX returns a value at a given position. MATCH returns the position of a value. Combined:<br><code>=INDEX(return_range, MATCH(lookup_value, lookup_range, 0))</code><br><br><strong>Why better:</strong> Looks any direction, doesn't break when columns inserted, faster on large data, supports multi-criteria:<br><code>=INDEX(C:C, MATCH(1,(A:A=v1)*(B:B=v2),0))</code> (array formula Ctrl+Shift+Enter)<br><br>In Excel 365: XLOOKUP is the modern replacement. But INDEX+MATCH is still asked in every analytics interview.`},
+  {cat:'excel',diff:'medium',q:'How does the Google Sheets QUERY function work?',a:`SQL-like queries directly on sheet data.<br><pre>=QUERY(A1:E100,
+  "SELECT A, B, SUM(C)
+   WHERE D = 'North'
+   GROUP BY A, B
+   ORDER BY SUM(C) DESC
+   LIMIT 10", 1)</pre>Last argument (1) = header rows. Supports SELECT, WHERE, GROUP BY, ORDER BY, LIMIT, PIVOT, LABEL.<br><br>Only in Google Sheets — write SQL-style analysis without pivot tables. A huge productivity advantage.`},
+  {cat:'excel',diff:'hard',q:'What is Power Query and why does it matter for analysts?',a:`Power Query (Get & Transform) connects, cleans, and reshapes data from multiple sources — built into Excel 2016+ and Power BI. No formulas or macros needed.<br><br><strong>Key capabilities:</strong> Connect to Excel, CSV, SQL, web, APIs. Filter, unpivot, merge, split, type-cast. Combine files from a folder automatically. Auto-refresh when source updates. M language for custom steps.<br><br><strong>Why it matters:</strong> Replaces VBA for most data prep. Reproducible, auditable, non-destructive. Knowing Power Query is a real differentiator — most analysts don't.`},
+
+  // ── STATISTICS ──
+  {cat:'stats',diff:'easy',q:'What is standard deviation and why does it matter to analysts?',a:`Standard deviation measures spread around the mean. Low SD = clustered. High SD = spread out.<br><br><strong>Analyst uses:</strong><br>• Define outliers — values beyond mean ± 2 or 3 SD<br>• Detect data quality issues<br>• Understand risk / volatility<br>• Compare variability across groups<br><br>SD vs Variance: SD = √Variance. SD is in the original unit (dollars, days) — more interpretable. Always report SD alongside mean for numeric columns.`},
+  {cat:'stats',diff:'medium',q:'What is A/B testing and how do you determine significance?',a:`A/B testing randomly splits users into control (A) and variant (B) to measure the effect of one specific change.<br><br><strong>Steps:</strong><br>1. Define hypothesis and primary metric<br>2. Power analysis → calculate required sample size<br>3. Run test until sample size hit — never stop early<br>4. Two-proportion z-test → p-value<br>5. p &lt; 0.05 AND confidence interval excludes 0 → statistically significant<br>6. Also check practical significance (is effect size meaningful to the business?)<br><br>"I always run a power analysis before testing" signals senior thinking.`},
+  {cat:'stats',diff:'hard',q:'Bayesian vs Frequentist statistics — what should analysts know?',a:`<strong>Frequentist:</strong> Probability = long-run frequency. Parameters fixed. P-values, confidence intervals. "Given H0 is true, how likely is this data?"<br><br><strong>Bayesian:</strong> Probability = degree of belief. Update beliefs with data via Bayes' theorem. Produces posterior distributions. Answers "what's the probability variant B is better?" directly.<br><br><strong>For analysts:</strong> Most companies use frequentist A/B testing. But Bayesian methods are growing — allow stopping tests early without inflating Type I error and are more intuitive for stakeholders. Companies like Etsy use Bayesian A/B. Knowing both is a real differentiator.`},
+
+  // ── POWER BI ──
+  {cat:'powerbi',diff:'easy',q:'Calculated column vs measure in Power BI — what is the difference?',a:`<strong>Calculated Column:</strong> Computed row-by-row at refresh. Stored in model. Uses memory. Use for values you filter/slice on.<br><code>Profit = Sales[Revenue] - Sales[Cost]</code><br><br><strong>Measure:</strong> Computed dynamically based on filter context. Not stored. More efficient. Use for KPIs in visuals.<br><code>Total Revenue = SUM(Sales[Revenue])</code><br><br>Rule: slicer/filter → calculated column. KPI/visual → measure. Measures are the heart of Power BI.`},
+  {cat:'powerbi',diff:'medium',q:'What is filter context and row context in DAX?',a:`The hardest and most important concept in DAX.<br><br><strong>Filter Context:</strong> Active filters from slicers, visual filters, CALCULATE. A chart showing "Revenue by Region" creates filter context for each region — measures respond to this automatically.<br><br><strong>Row Context:</strong> Exists inside calculated columns and iterators (SUMX, AVERAGEX). The "current row" being evaluated.<br><br><strong>CALCULATE</strong> transitions row context to filter context — this is why it's the most powerful DAX function. Understanding this explains why the same measure gives different values in different visual contexts.`},
+  {cat:'powerbi',diff:'hard',q:'How do you optimize a slow Power BI report?',a:`<strong>Data Model:</strong> Use star schema, remove unused columns, use integer keys for relationships, avoid many-to-many.<br><br><strong>DAX:</strong> Avoid FILTER() on full tables, use measure branching (reuse measures inside measures), minimize row-by-row iteration on large tables, always use DIVIDE() instead of "/".<br><br><strong>Report:</strong> Limit visuals per page (each runs a query), use visual-level filters, consider aggregations for huge datasets.<br><br>Use <strong>Performance Analyzer</strong> (View menu) — identifies which visuals are slow and shows query duration for each. Start here, always.`},
+
+  // ── ML ──
+  {cat:'ml',diff:'easy',q:'Supervised vs unsupervised learning — key differences.',a:`<strong>Supervised:</strong> Learns from labelled data. Goal: predict output for new inputs.<br>Examples: Linear regression (price), Logistic regression (churn yes/no), Decision trees, XGBoost.<br><br><strong>Unsupervised:</strong> Finds patterns in unlabelled data.<br>Examples: K-means clustering (customer segments), PCA (dimensionality reduction), anomaly detection.<br><br>For analysts: supervised learning is most practically useful. Know how to build, evaluate, and interpret — not just run.`},
+  {cat:'ml',diff:'medium',q:'Precision, recall, F1 — explain each and when to optimize them.',a:`<strong>Precision</strong> = TP/(TP+FP). Of predicted positives, how many were actually positive. Optimize when false positives are costly (spam filter mislabeling real emails).<br><br><strong>Recall</strong> = TP/(TP+FN). Of actual positives, how many did we catch. Optimize when false negatives are costly (cancer detection missing a real case).<br><br><strong>F1</strong> = harmonic mean of precision and recall. Use when you need one balanced metric — especially for imbalanced classes where accuracy is misleading.<br><br>Example: 99% accuracy on 1% cancer dataset — model predicts "no cancer" every time. F1 reveals this failure immediately.`},
+  {cat:'ml',diff:'hard',q:'What is gradient boosting and why does XGBoost dominate tabular ML?',a:`Gradient boosting builds trees sequentially — each tree corrects residuals (errors) of the previous ensemble.<br><br><strong>XGBoost advantages:</strong> L1+L2 regularization built in, handles missing values natively, parallel tree construction, feature importance, tree pruning via max_depth.<br><br><strong>Key hyperparameters to tune:</strong> n_estimators, learning_rate, max_depth, subsample, colsample_bytree, reg_alpha, reg_lambda.<br><br>For structured tabular data, XGBoost/LightGBM consistently beat neural networks. Knowing when to use it and how to tune it separates good from great.`},
+
+  // ── DATA SCIENCE ──
+  {cat:'ds',diff:'medium',q:'What is the difference between data analytics and data science?',a:`<strong>Data Analytics:</strong> Analyzes historical data to answer business questions. Outputs: dashboards, reports, recommendations. Tools: SQL, Excel, Power BI, Python (Pandas). More business-facing.<br><br><strong>Data Science:</strong> Builds predictive models and algorithms. Outputs: deployed models, forecasts, automated decisions. Tools: Python/R (scikit-learn, TensorFlow, PyTorch). More engineering-facing.<br><br>Career path: most people start in analytics → move toward data science as ML skills grow. Analytics foundations are required regardless.`},
+  {cat:'ds',diff:'hard',q:'What is feature engineering and why does it matter more than model choice?',a:`Feature engineering = creating, transforming, and selecting input variables for a model.<br><br>A mediocre model with excellent features beats an excellent model with poor features almost every time. Kaggle grandmasters spend 80% of time on features, not model tuning.<br><br><strong>Techniques:</strong><br>• Encoding: one-hot, target encoding, ordinal<br>• Time features: hour of day, day of week, days since last event<br>• Aggregations: rolling means, lag features, customer-level stats<br>• Interactions: multiplying or dividing related features<br>• Binning continuous → categorical<br>• Text: TF-IDF, embeddings<br><br>Best features come from domain knowledge — understand the business first.`},
+
+  // ── AI TOOLS ──
+  {cat:'ai',diff:'easy',q:'How should data analysts use AI tools in their workflow?',a:`<strong>High-value uses:</strong><br>• Debug SQL/Python errors instantly — paste error + code, get fix<br>• Generate boilerplate (EDA templates, cleaning functions, chart code)<br>• Summarize findings in executive language<br>• Explain statistical concepts in plain English for stakeholders<br>• Review your analysis approach before presenting<br>• Generate test datasets for practice<br>• Write SQL for unfamiliar functions<br><br><strong>Key rule:</strong> Always verify AI-generated code. AI can confidently produce wrong results. Use it to accelerate — not replace — your judgment.<br><br>In 2025+, saying "I integrate AI tools into my workflow" is a positive interview signal.`},
+  {cat:'ai',diff:'medium',q:'What is prompt engineering and what are the principles for analysts?',a:`Designing inputs to AI models to get the most useful outputs.<br><br><strong>Principles for analysts:</strong><br>• <strong>Be specific:</strong> "Write a Python function using Pandas to calculate 30-day rolling churn from a DataFrame with columns [user_id, date, status]" beats "help with churn"<br>• <strong>Provide context:</strong> Include column names, data types, what you've tried<br>• <strong>Specify format:</strong> "Return only the SQL query, no explanation"<br>• <strong>Role-play:</strong> "You are a senior data analyst reviewing my EDA. What am I missing?"<br>• <strong>Iterate:</strong> First ask for approach, then implementation, then review<br>• <strong>Be precise about constraints:</strong> database type, Python version, output format`},
+
+  // ── CASE STUDY ──
+  {cat:'case',diff:'medium',q:'How would you build a customer segmentation from scratch?',a:`<strong>1. Define purpose:</strong> What decision does segmentation inform?<br><strong>2. Collect data:</strong> Transactions, demographics, behaviour, support history.<br><strong>3. Feature engineering — RFM:</strong> Recency (days since last purchase), Frequency (purchase count), Monetary (total spend).<br><strong>4. Cluster:</strong> K-means on scaled RFM. Use elbow method + silhouette score for optimal K. Typically 4–6 segments emerge.<br><strong>5. Profile segments:</strong> "Champions" (high R,F,M), "At Risk" (low R, high F/M), "New" (high R, low F/M).<br><strong>6. Define actions per segment:</strong> Win-back for "At Risk". Loyalty for "Champions". Analysis without action is worthless.`},
+  {cat:'case',diff:'hard',q:'Design a complete metrics framework for a new subscription product.',a:`<strong>North Star Metric:</strong> Weekly active subscribers.<br><br><strong>Acquisition:</strong> Trial starts, free→paid conversion, CAC by channel, payback period.<br><strong>Activation:</strong> % completing onboarding in 3 days, time-to-first-value.<br><strong>Engagement:</strong> DAU/MAU, features per session, weekly active rate.<br><strong>Retention:</strong> D7/D30/D90 curves, monthly churn, net revenue retention (NRR).<br><strong>Revenue:</strong> MRR, ARR, ARPU, LTV, LTV:CAC (target >3:1).<br><strong>Satisfaction:</strong> NPS, CSAT, cancellation survey reasons.<br><br>Always structure as a funnel. Define success thresholds <em>before</em> launch — prevents p-hacking.`},
+
+  // ── BEHAVIOURAL ──
+  {cat:'behav',diff:'medium',q:'How do you handle a stakeholder who ignores your analysis and follows their gut?',a:`<strong>Answer structure:</strong><br>1. "First I try to understand their perspective — gut instinct is sometimes based on real experience I'm not seeing in data."<br>2. "I present data transparently with context, not as a verdict."<br>3. "I invite them to challenge my methodology — they may see a flaw I missed."<br>4. "If disagreement persists, I suggest testing both approaches — let the data decide."<br>5. "If it's high-stakes with clear risk in the data, I escalate diplomatically — not confrontationally."<br><br>Key message: data over ego, but always collaborative and respectful.`},
+  {cat:'behav',diff:'hard',q:'Tell me about a time you delivered an unpopular but correct insight.',a:`Use STAR format — portfolio projects count as a fresher:<br><br><strong>Situation:</strong> "Analyzing [project data], I found [assumption everyone held was wrong]..."<br><strong>Task:</strong> "I needed to present this to [person/team] who had built their strategy around the opposite assumption."<br><strong>Action:</strong> "I double-checked my analysis, then presented with clear evidence — framed as 'here's what data shows and what it means for our approach', not 'you're wrong'. I gave them time and invited them to challenge my methodology."<br><strong>Result:</strong> "[Outcome]. Lesson: present data as collaborator, not judge."<br><br>The analytical thinking and communication approach is what they're evaluating.`},
+];
+
+/* ── QUIZ QUESTIONS (MCQ — used by daily quiz, fun quiz, benchmark) ── */
+const QUIZ_Q = [
+  {q:'Which SQL clause filters AFTER aggregation?',opts:['WHERE','HAVING','GROUP BY','ORDER BY'],ans:1,exp:'HAVING filters groups after GROUP BY. WHERE filters individual rows before grouping.'},
+  {q:'DENSE_RANK() for scores 100, 100, 90 returns:',opts:['1,1,3','1,2,3','1,1,2','2,2,3'],ans:2,exp:'DENSE_RANK: 1,1,2 — no gaps after ties. RANK gives 1,1,3.'},
+  {q:'Which Pandas method removes duplicate rows?',opts:['.remove_dupes()','drop_duplicates()','unique()','dedupe()'],ans:1,exp:'df.drop_duplicates() removes duplicate rows.'},
+  {q:'VLOOKUP 4th argument FALSE means:',opts:['Approximate match','Exact match','Case sensitive','Descending'],ans:1,exp:'FALSE = exact match. TRUE = approximate match (requires sorted lookup column).'},
+  {q:'Overfitting means:',opts:['Too simple','Good on test data','Memorizes training, fails on new data','Too few parameters'],ans:2,exp:'High training accuracy, low test accuracy = overfitting.'},
+  {q:'LAG() vs LEAD():',opts:['LAG=next, LEAD=prev','LAG=prev, LEAD=next','Both access current','Both require PARTITION BY'],ans:1,exp:'LAG = previous row value. LEAD = next row value.'},
+  {q:'p-value < 0.05 means:',opts:['Large effect size','Practically significant','Statistically significant','Null is true'],ans:2,exp:'p < 0.05: if null were true, < 5% chance of this result. Does NOT measure effect size.'},
+  {q:'Which replaces VLOOKUP and looks any direction?',opts:['INDEX','XLOOKUP','HLOOKUP','MATCH'],ans:1,exp:'XLOOKUP (Excel 365) — no column number needed, any direction.'},
+  {q:'Correct DAX measure syntax:',opts:['Revenue = df["rev"].sum()','Revenue = SUM(Sales[Revenue])','Revenue = SUMIF(A:A,"",B:B)','Revenue = SELECT SUM(rev)'],ans:1,exp:'DAX uses SUM(Table[Column]) syntax.'},
+  {q:'R² = 0.85 means:',opts:['85% are outliers','85% accurate','85% of Y variance explained by X','15% error rate'],ans:2,exp:'R² = proportion of variance in Y explained by the model.'},
+  {q:'pd.merge(df1,df2,how="left") keeps:',opts:['All df2 rows','Only matching rows','All df1 + matching df2','All rows'],ans:2,exp:'LEFT JOIN keeps all left rows, matching right data, NULL where no match.'},
+  {q:'Best chart for distribution of a continuous variable:',opts:['Bar chart','Scatter plot','Histogram','Line chart'],ans:2,exp:'Histogram shows frequency distribution. Bar charts are for categorical data.'},
+  {q:'Star schema =',opts:['JSON storage','Fact + dimension tables','One flat table','Type of index'],ans:1,exp:'Central fact table surrounded by dimension tables. Standard data warehouse design.'},
+  {q:'CALCULATE in DAX:',opts:['Calculates a sum','Modifies filter context','Joins tables','Returns current row'],ans:1,exp:'CALCULATE evaluates expression after modifying filter context — most powerful DAX function.'},
+  {q:'Precision =',opts:['TP/(TP+FN)','TN/(TN+FP)','TP/(TP+FP)','(TP+TN)/Total'],ans:2,exp:'Precision = TP/(TP+FP). Of predicted positives, how many were actually positive.'},
+  {q:'UNION vs UNION ALL — which is faster?',opts:['UNION','UNION ALL','Same speed','Depends'],ans:1,exp:'UNION ALL is faster — no deduplication step.'},
+  {q:'Central Limit Theorem states:',opts:['Large samples are exponential','Sample means approach normal as n grows','All data is normal','n=30 always sufficient'],ans:1,exp:'As n increases, distribution of sample means approximates normal regardless of population distribution.'},
+  {q:'DIVIDE() in DAX is used to:',opts:['Round numbers','Avoid division by zero','Format percentages','Split tables'],ans:1,exp:'DIVIDE(num, denom, [alternate]) handles division by zero gracefully.'},
+  {q:'K in K-means clustering =',opts:['Iterations','Data points','Number of clusters','Features'],ans:2,exp:'K = number of clusters you want. Use elbow method or silhouette score to find optimal K.'},
+  {q:'ETL stands for:',opts:['Extract Test Load','Extract Transform Load','Encode Transfer Log','Export Transform Launch'],ans:1,exp:'Extract, Transform, Load — the data pipeline moving from source to destination.'},
+  {q:'What does .copy() do in Pandas?',opts:['Copies file to disk','Creates independent DataFrame copy','Duplicates column names','Backs up to cloud'],ans:1,exp:'.copy() creates a true independent copy — prevents SettingWithCopyWarning bugs.'},
+  {q:'Type II error is:',opts:['False positive','Correct rejection','False negative','Correct acceptance'],ans:2,exp:'Type II error = False Negative — failing to detect a real effect.'},
+  {q:'Churn rate =',opts:['New / total customers','Lost / starting × 100','Revenue per user','Clicks / impressions'],ans:1,exp:'Churn = customers lost / customers at start × 100. Core SaaS metric.'},
+  {q:'What does zip() do in Python?',opts:['Compress files','Pair elements from multiple iterables','Remove duplicates','Sort a list'],ans:1,exp:'zip([1,2],[a,b]) → [(1,a),(2,b)]. Pairs elements from multiple iterables.'},
+  {q:'LTV stands for:',opts:['Last Transaction Value','Lifetime Value','Login Time Value','Lead Transfer Volume'],ans:1,exp:'Lifetime Value = total revenue expected from one customer over their entire relationship.'},
+  {q:'SUMIFS vs SUMIF key difference:',opts:['SUMIFS is faster','SUMIFS supports multiple conditions','SUMIF is Sheets-only','They are identical'],ans:1,exp:'SUMIFS allows multiple criteria pairs. Note: sum_range comes FIRST in SUMIFS.'},
+  {q:'DAU/MAU ratio measures:',opts:['Database uptime','User stickiness','Daily average users','Monthly update'],ans:1,exp:'DAU/MAU = stickiness/engagement depth. 0.5 = users engage every other day.'},
+  {q:'SQL keyword for unique values:',opts:['UNIQUE','DISTINCT','DIFFERENT','FILTER'],ans:1,exp:'SELECT DISTINCT removes duplicate values. COUNT(DISTINCT col) counts unique non-null values.'},
+  {q:'Foreign key =',opts:['Encrypted PK','Column referencing another table\'s PK','Multi-column index','Key used only in JOINs'],ans:1,exp:'Foreign key references the primary key of another table — establishes relationship and referential integrity.'},
+  {q:'What is MRR?',opts:['Maximum Recurring Revenue','Monthly Recurring Revenue','Minimum Rate of Return','Monthly Response Rate'],ans:1,exp:'Monthly Recurring Revenue — predictable subscription revenue. MRR × 12 = ARR.'},
+];
+
+/* ── TIPS ── */
+const TIPS = [
+  {cat:'sql',title:'Always EXPLAIN before optimizing',body:'Run <code>EXPLAIN ANALYZE</code> in PostgreSQL before touching anything. See the query plan, slow steps, and whether indexes are used. Never optimize blind.'},
+  {cat:'sql',title:'COALESCE handles NULLs cleanly',body:'<code>COALESCE(col1, col2, "default")</code> returns first non-NULL value. Replace CASE WHEN IS NULL chains with this one elegant function.'},
+  {cat:'sql',title:'COUNT(*) vs COUNT(col) are different',body:'COUNT(*) counts all rows including NULLs. COUNT(col) counts only non-NULL values. This causes subtle bugs — always know which you need.'},
+  {cat:'sql',title:'STRING_AGG for comma-separated lists',body:'PostgreSQL: <code>STRING_AGG(col, \', \')</code>. MySQL: <code>GROUP_CONCAT(col)</code>. Create comma-separated lists per group — e.g. all products per customer.'},
+  {cat:'python',title:'Use .copy() to avoid bugs',body:'When slicing: <code>df2 = df[df["col"] > 0].copy()</code>. Without .copy(), modifying df2 may unexpectedly modify df. Always copy when you intend to modify a subset.'},
+  {cat:'python',title:'Profile with %timeit in Jupyter',body:'<code>%timeit df["col"].apply(func)</code> — runs many times, reports mean time. Compare .apply() vs vectorized — vectorized is usually 10–100× faster.'},
+  {cat:'python',title:'pd.cut() for clean binning',body:'<code>pd.cut(df["age"], bins=[0,18,35,60,100], labels=["teen","young","mid","senior"])</code> — bins continuous variables into clean categories.'},
+  {cat:'excel',title:'Ctrl+Shift+L — toggle filters instantly',body:'Fastest way to add/remove Excel filters — no menu needed. Combine with Ctrl+Shift+End to select to last used cell. These shortcuts save hours weekly.'},
+  {cat:'excel',title:'Use Tables (Ctrl+T) for everything',body:'Excel Tables auto-expand when you add rows, make formulas use [@column] notation, and are the foundation for Power Query. Everything works better inside a Table.'},
+  {cat:'viz',title:'Title should state the insight',body:'Bad: "Revenue by Region". Good: "North Region Drives 60% of Revenue". The reader should understand the point before looking at the visual.'},
+  {cat:'viz',title:'5-second dashboard rule',body:'A good dashboard communicates its key insight in 5 seconds. If someone must study it — redesign it. Most important KPI top-left. Color used intentionally, not decoratively.'},
+  {cat:'career',title:'Apply within 1 hour of posting',body:'LinkedIn shows applicants chronologically by default. Being in the first 10–20 means your resume gets seen. Set job alerts and apply the moment they hit your inbox.'},
+  {cat:'career',title:'GitHub README is your cover letter',body:'Write READMEs: What problem → What data → 3 bullet insights → Tools → How to run. Hiring managers skim. Make every word count.'},
+  {cat:'mindset',title:'Always ask "so what?" after every finding',body:'"Revenue up 15%." So what? Who drove it? Is it sustainable? What action follows? The finding is useless without the implication. Never stop at the number.'},
+  {cat:'mindset',title:'SQL + communication = 80% of analyst value',body:'Python and viz are multipliers. ML is a bonus. Master SQL and the ability to explain what data means in plain English — everything else is secondary.'},
+  {cat:'ai',title:'Use AI to debug, not to think for you',body:'Paste your SQL error + code into Claude or ChatGPT — get a fix instantly. Always understand the fix before using it. AI accelerates your judgment, not replaces it.'},
+  {cat:'ai',title:'Build a personal prompt library',body:'Keep a doc with prompts that work for you: "Review my SQL for efficiency", "Summarize for non-technical audience", "Suggest visualizations for this data". Reuse endlessly.'},
+  {cat:'stats',title:'Median over mean for skewed data',body:'Income, house prices, response times — always use median. A few extreme values completely distort the mean. Check skewness before reporting central tendency.'},
+  {cat:'sql',title:'Use window functions for "top N per group"',body:'The ROW_NUMBER() + PARTITION BY + CTE pattern returns the top N records per group. Learn this pattern cold — it appears in nearly every analyst interview.'},
+  {cat:'python',title:'Use f-strings for clean diagnostic output',body:'<code>print(f"Rows: {len(df):,} | Nulls: {df.isnull().sum().sum()} | Cols: {df.shape[1]}")</code> — professional, readable diagnostics in one line.'},
+];
+
+/* ── FLASHCARDS ── */
+const FLASHCARDS = [
+  {front:'What is ETL?',back:'Extract, Transform, Load. Pulling data from sources, cleaning it, and loading into a destination.'},
+  {front:'What is a primary key?',back:'A column (or set) uniquely identifying each row. Cannot be NULL. Cannot have duplicates.'},
+  {front:'What is normalization?',back:'Organizing DB tables to reduce redundancy. 1NF: atomic values. 2NF: no partial deps. 3NF: no transitive deps.'},
+  {front:'What is a data warehouse?',back:'Centralized repository for analytical querying. Historical, structured data. OLAP (read-heavy). Examples: BigQuery, Snowflake, Redshift.'},
+  {front:'What is R-squared?',back:'Proportion of variance in Y explained by the model. 0–1. R²=0.85 → 85% explained. Does NOT mean causation.'},
+  {front:'What is churn rate?',back:'% customers lost in a period. Churn = Lost / Starting × 100. Core SaaS metric.'},
+  {front:'What is LTV?',back:'Lifetime Value — total revenue from one customer. LTV = ARPU × average lifetime. Compare with CAC.'},
+  {front:'What is a z-score?',back:'Standard deviations from the mean. z = (x-μ)/σ. |z| > 3 usually = outlier.'},
+  {front:'What is a data lake?',back:'Stores raw data in native format. Cheaper, less structured. Schema-on-read. Examples: AWS S3, Azure Data Lake.'},
+  {front:'What is DAX?',back:'Data Analysis Expressions. Formula language in Power BI, Power Pivot, SSAS. For calculated columns and measures.'},
+  {front:'What is bias in ML?',back:'Error from wrong assumptions. High bias = underfitting — model too simple, misses patterns.'},
+  {front:'What is EDA?',back:'Exploratory Data Analysis. Understand structure, distributions, nulls, outliers, relationships — before modeling.'},
+  {front:'What is CAC?',back:'Customer Acquisition Cost. Sales + marketing spend / new customers. Compare with LTV. LTV:CAC > 3:1 = healthy.'},
+  {front:'What is an API?',back:'Application Programming Interface. Allows software to communicate. Analysts use APIs to pull data from platforms into Python.'},
+  {front:'OLAP vs OLTP?',back:'OLAP: reads, aggregations, dashboards (warehouse). OLTP: writes, updates, live operations (app database).'},
+  {front:'What is a cohort?',back:'Group of users sharing a characteristic in the same time period. Cohort analysis tracks them over time.'},
+  {front:'What is MRR?',back:'Monthly Recurring Revenue. Predictable subscription revenue. MRR × 12 = ARR (Annual Recurring Revenue).'},
+  {front:'What is NPS?',back:'Net Promoter Score. "How likely to recommend?" Promoters - Detractors. Scale -100 to +100.'},
+  {front:'What is a foreign key?',back:'Column referencing another table\'s primary key. Establishes relationship and enforces referential integrity.'},
+  {front:'What is the median?',back:'Middle value when data is sorted. Robust to outliers. Use for skewed data like income, house prices, wait times.'},
+];
+
+/* ── RIDDLES ── */
+const RIDDLES = [
+  {q:'I have rows and columns but I\'m not a spreadsheet. I relate to others through keys but I\'m not a locksmith. What am I?',a:'A database table. Tables have rows and columns, and foreign keys define relationships.'},
+  {q:'An analyst says her model has 99% accuracy on a dataset where 99% of records are "No". Is her model good?',a:'No! It\'s predicting "No" for everything — the accuracy paradox. F1 score and precision/recall would reveal this failure.'},
+  {q:'I\'m always in the middle but I\'m not the mean. I\'m robust to outliers. What am I?',a:'The median. Middle value when sorted — extreme values don\'t pull it like the mean.'},
+  {q:'I stack rows, not columns. I remove duplicates by default. What SQL operation am I?',a:'UNION. Combines SELECT results vertically and removes duplicates. UNION ALL keeps all rows.'},
+  {q:'I\'m the probability of rejecting the null hypothesis when it\'s actually true. Analysts keep me below 5%. What am I?',a:'Alpha (α) — the significance level. Also called Type I error rate.'},
+  {q:'Divide my LTV by me to check if your business is healthy. What am I?',a:'CAC — Customer Acquisition Cost. LTV:CAC > 3:1 is the golden ratio for SaaS health.'},
+  {q:'I\'m a SQL JOIN that returns all combinations of rows. I can cause explosive results. What am I?',a:'CROSS JOIN — returns the cartesian product of two tables. n×m rows. Use with extreme caution.'},
+];
+
+/* ── JARGON ── */
+const JARGON = [
+  {term:'DAU/MAU',def:'Daily/Monthly Active Users ratio. Measures stickiness — how often users return.'},
+  {term:'ARPU',def:'Average Revenue Per User. Total revenue / active users. Core SaaS monetization metric.'},
+  {term:'CAC',def:'Customer Acquisition Cost. Sales + marketing spend / new customers.'},
+  {term:'Churn',def:'Rate customers stop using your product. 5% monthly churn = lose half customers per year.'},
+  {term:'Cohort',def:'Group sharing a characteristic in the same time period. Cohort analysis tracks them over time.'},
+  {term:'KPI',def:'Key Performance Indicator. Measurable value showing progress toward business objectives.'},
+  {term:'OLAP/OLTP',def:'OLAP = analytical reads (warehouse). OLTP = transactional writes (app database).'},
+  {term:'MRR/ARR',def:'Monthly/Annual Recurring Revenue. Predictable subscription revenue.'},
+  {term:'NPS',def:'Net Promoter Score. Promoters minus Detractors. Scale -100 to +100.'},
+  {term:'LTV:CAC',def:'Lifetime Value / Acquisition Cost. > 3:1 = healthy unit economics.'},
+  {term:'Funnel',def:'Sequence of steps toward a goal. Analysts measure drop-off at each stage.'},
+  {term:'p-value',def:'If null hypothesis were true, probability of observing this result. < 0.05 = statistically significant.'},
+];
+
+/* ── ACHIEVEMENTS ── */
+const ACHIEVEMENTS = [
+  {id:'first_quiz',    icon:'⚡', name:'FIRST QUIZ',       desc:'Completed your first quiz'},
+  {id:'streak_3',      icon:'🔥', name:'3-DAY STREAK',     desc:'3 days in a row'},
+  {id:'streak_7',      icon:'🌟', name:'WEEK WARRIOR',     desc:'7-day streak achieved'},
+  {id:'streak_30',     icon:'💎', name:'MONTH MASTER',     desc:'30-day streak — legendary'},
+  {id:'pass_gate',     icon:'🔓', name:'GATE KEEPER',      desc:'Passed the daily quiz gate'},
+  {id:'perfect_quiz',  icon:'💯', name:'PERFECT SCORE',    desc:'100% on any quiz'},
+  {id:'questions_10',  icon:'📚', name:'CURIOUS MIND',     desc:'Opened 10 questions'},
+  {id:'questions_50',  icon:'🧠', name:'KNOWLEDGE SEEKER', desc:'Opened 50 questions'},
+  {id:'benchmark_done',icon:'🏆', name:'BENCHMARKED',      desc:'Completed industry benchmark'},
+  {id:'week1_done',    icon:'🗺️', name:'WEEK 1 DONE',      desc:'Completed Week 1'},
+  {id:'all_weeks',     icon:'🎓', name:'ROADMAP COMPLETE', desc:'All 8 weeks completed'},
+  {id:'explain_used',  icon:'🦊', name:'CURIOUS CREATURE', desc:'Used Explain Like I\'m...'},
+  {id:'note_posted',   icon:'✍️', name:'CONTRIBUTOR',      desc:'Posted a community note'},
+];
+
+/* ── EXPLAIN LIKE I'M... ANIMALS ── */
+const ANIMALS = [
+  {emoji:'🐴', name:'A Donkey',    sub:'Stubborn but will get there',   style:'very simple, stubborn, says "okay but WHY?" repeatedly, uses short sentences, complains a bit'},
+  {emoji:'🐘', name:'An Elephant', sub:'Never forgets, loves detail',   style:'detailed, memory-obsessed, connects to past things, says "This reminds me of..." frequently'},
+  {emoji:'🐜', name:'An Ant',      sub:'Tiny steps, very literal',       style:'tiny practical steps, very literal, always asks "what is the smallest thing I can do right now?"'},
+  {emoji:'🦁', name:'A Lion',      sub:'Bold, wants to dominate',        style:'bold and dramatic, power-focused, roars with enthusiasm, wants to know how to use this to WIN'},
+  {emoji:'🐬', name:'A Dolphin',   sub:'Playful and clever',             style:'playful, uses ocean analogies, very enthusiastic, says "Oh! Oh! So it\'s like when waves..."'},
+  {emoji:'🦊', name:'A Fox',       sub:'Clever, finds shortcuts',        style:'always looking for the shortcut, suspicious of complexity, says "Ah, the trick is..." and loves hacks'},
+];
+const AGES = ['5 years old','10 years old','15 years old','A grandparent','A busy CEO'];
+
+/* ── EXPLAIN CONCEPTS ── */
+const EXPLAIN_CONCEPTS = [
+  'SQL JOIN','p-value','Machine Learning','Data Warehouse','A/B Testing',
+  'Standard Deviation','What is an API?','Data Pipeline','Overfitting','Dashboard',
+  'Feature Engineering','Customer Churn','Data Lake','Gradient Boosting','Correlation',
+];
+
+/* ── CAREER SWITCHER PATHS ── */
+const CAREER_PATHS = [
+  {
+    icon:'💰', from:'Finance / Accounting', title:'Finance → Data',
+    transferable:['Excel mastery','Financial modelling','Business KPI understanding','Attention to detail','Stakeholder communication'],
+    tolearn:['SQL (most important gap)','Python (Pandas)','Power BI / Tableau','Statistics','Data cleaning'],
+    timeline:'3–4 months',
+    tip:'You already understand business metrics better than most CS grads. Your Excel skills are a head start on Power BI.',
+  },
+  {
+    icon:'📢', from:'Marketing', title:'Marketing → Data',
+    transferable:['Campaign metrics (CTR, CPC, ROAS)','A/B testing concepts','Customer journey understanding','Storytelling','Google Analytics basics'],
+    tolearn:['SQL (biggest gap)','Python','Statistical significance','Data modelling','Dashboard building'],
+    timeline:'4–5 months',
+    tip:'You already speak the language of metrics and conversion. Marketing analytics roles want exactly your background + SQL.',
+  },
+  {
+    icon:'⚙️', from:'Software Engineering', title:'Engineering → Data',
+    transferable:['Python / programming','Git and version control','Database querying','Systems thinking','Debugging mindset'],
+    tolearn:['Business domain knowledge','Data storytelling','Statistics and A/B testing','BI tools (Power BI, Tableau)','Communication for non-technical audiences'],
+    timeline:'2–3 months',
+    tip:'Fastest switcher. Coding background means Python and SQL come quickly. The gap is business communication and visualization.',
+  },
+  {
+    icon:'🏥', from:'Healthcare / Science', title:'Healthcare → Data',
+    transferable:['Research methodology','Statistical thinking','Clinical KPIs','Documentation precision','Domain expertise'],
+    tolearn:['SQL','Python (Pandas)','Healthcare analytics tools','HIPAA-aware data handling','BI dashboards'],
+    timeline:'4–5 months',
+    tip:'Healthcare data is one of the fastest-growing analytics sectors. Your domain expertise is invaluable — rare to find in pure data people.',
+  },
+  {
+    icon:'🎓', from:'Non-tech / Any Background', title:'Non-tech → Data',
+    transferable:['Domain expertise in your field','Problem-solving mindset','Communication skills','Understanding real business problems'],
+    tolearn:['SQL (start here)','Excel/Sheets','Python basics','Statistics','Power BI','Data storytelling'],
+    timeline:'5–6 months',
+    tip:'Domain expertise + SQL > pure tech skills alone. Healthcare background + SQL = healthcare analyst. Finance background + SQL = fintech analyst. You\'re more valuable than you think.',
+  },
+];
+
+/* ── WORD SCRAMBLE ── */
+const SCRAMBLE_WORDS = [
+  {word:'PANDAS',  hint:'Python data manipulation library'},
+  {word:'PIVOT',   hint:'Table transformation technique'},
+  {word:'QUERY',   hint:'SQL command to retrieve data'},
+  {word:'INDEX',   hint:'Fast lookup structure in DB'},
+  {word:'CHURN',   hint:'Customer loss metric'},
+  {word:'MEDIAN',  hint:'Middle value, robust to outliers'},
+  {word:'FILTER',  hint:'WHERE clause action'},
+  {word:'SCHEMA',  hint:'Database structure blueprint'},
+  {word:'CLUSTER', hint:'ML grouping technique'},
+  {word:'METRIC',  hint:'Measurable business indicator'},
+  {word:'FUNNEL',  hint:'Steps toward conversion'},
+  {word:'OUTLIER', hint:'Extreme data point'},
+];
+
+/* ── PROJECT IDEAS GENERATOR ── */
+function generateProject(interest, level) {
+  const templates = {
+    Cricket: {
+      Beginner:     {title:'IPL Season Stats Dashboard', desc:'Analyze IPL match data to find top scorers, wicket takers, and team trends.', dataset:'Kaggle: IPL Complete Dataset', tools:'Python, Pandas, Matplotlib, Excel'},
+      Intermediate: {title:'Player Performance Predictor', desc:'Build a regression model to predict batting average from historical stats.', dataset:'ESPNcricinfo scraped data', tools:'Python, scikit-learn, Seaborn'},
+      Advanced:     {title:'Live Win Probability Model', desc:'Calculate real-time win probability during a match from ball-by-ball data.', dataset:'Cricsheet.org', tools:'Python, XGBoost, Plotly, BigQuery'},
+    },
+    Finance: {
+      Beginner:     {title:'Personal Budget Analyzer', desc:'Categorize spending and find top savings opportunities from transaction data.', dataset:'Your bank export or sample CSV', tools:'Excel or Python + Pandas'},
+      Intermediate: {title:'Stock Trend Analysis', desc:'Compare multiple stocks over 5 years, find correlations and seasonal patterns.', dataset:'Yahoo Finance API (yfinance)', tools:'Python, Pandas, Matplotlib'},
+      Advanced:     {title:'Credit Risk Scorecard', desc:'Predict loan default risk using financial features. Include SHAP explainability.', dataset:'Kaggle: Give Me Some Credit', tools:'Python, XGBoost, SHAP, Power BI'},
+    },
+  };
+  const base = templates[interest]?.[level];
+  if (base) return base;
+  return {
+    title: `${interest} ${level} Analytics Project`,
+    desc: `Analyze ${interest.toLowerCase()} data to find insights and build a dashboard.`,
+    dataset: `Search Kaggle for "${interest.toLowerCase()} dataset"`,
+    tools: level==='Beginner'?'Python, Pandas, Matplotlib':level==='Intermediate'?'Python, SQL, Power BI':'Python, ML, BigQuery, Plotly',
+  };
+}
+
+/* ── DAILY SEED (rotates by date) ── */
+function getDailySeed() {
+  const d = new Date();
+  return d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate();
+}
+function seededShuffle(arr, seed) {
+  const a = [...arr];
+  let s = seed;
+  for (let i = a.length - 1; i > 0; i--) {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    const j = Math.abs(s) % (i + 1);
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ── QUIZ QUESTIONS (MCQ) ── */
+const QUIZ_QUESTIONS = [
+  {q:'Which SQL clause filters AFTER aggregation?',opts:['WHERE','HAVING','GROUP BY','ORDER BY'],ans:1,exp:'HAVING filters groups after GROUP BY. WHERE filters rows before grouping.',cat:'sql'},
+  {q:'What does DENSE_RANK() return for scores 100,100,90?',opts:['1,1,3','1,2,3','1,1,2','2,2,3'],ans:2,exp:'DENSE_RANK: no gaps after ties. Gives 1,1,2. RANK would give 1,1,3.',cat:'sql'},
+  {q:'Which Pandas method removes duplicate rows?',opts:['remove_dupes()','drop_duplicates()','unique()','dedupe()'],ans:1,exp:'df.drop_duplicates() removes duplicate rows. .unique() returns unique values from a Series.',cat:'python'},
+  {q:'What does VLOOKUP\'s 4th argument FALSE mean?',opts:['Approximate match','Exact match','Case-sensitive','Descending'],ans:1,exp:'FALSE = exact match. TRUE = approximate match (needs sorted data).',cat:'excel'},
+  {q:'What is overfitting?',opts:['Model too simple','Good test accuracy','Model memorises training data, fails on new','Too few parameters'],ans:2,exp:'Overfitting = high train accuracy, low test accuracy. Model learned noise, not patterns.',cat:'ml'},
+  {q:'Which function shows previous row\'s value in SQL?',opts:['LEAD()','PRIOR()','LAG()','BEFORE()'],ans:2,exp:'LAG() accesses previous row value. LEAD() accesses next row. Both are window functions.',cat:'sql'},
+  {q:'What does p-value < 0.05 mean?',opts:['Effect size is large','Practically significant','Statistically significant at 5% level','Null hypothesis is true'],ans:2,exp:'p < 0.05: if null were true, <5% chance of seeing this result. Does NOT measure effect size.',cat:'stats'},
+  {q:'Which Excel function replaces VLOOKUP and can look any direction?',opts:['INDEX','XLOOKUP','HLOOKUP','MATCH'],ans:1,exp:'XLOOKUP (Excel 365) is the modern replacement — more flexible, faster.',cat:'excel'},
+  {q:'What does R² = 0.85 mean in regression?',opts:['85% data are outliers','85% accuracy','85% of variance in Y explained by X','15% error rate'],ans:2,exp:'R² = proportion of variance in Y explained by the model. 0.85 = 85% explained.',cat:'stats'},
+  {q:'pd.merge(df1,df2,how="left") keeps which rows?',opts:['All df2 rows','Only matches','All df1 rows + matching df2','All rows both'],ans:2,exp:'LEFT JOIN: all left table rows, NULL where no right match.',cat:'python'},
+  {q:'Best chart type for continuous variable distribution?',opts:['Bar chart','Scatter plot','Histogram','Line chart'],ans:2,exp:'Histograms show frequency distribution of continuous data. Bar charts are for categorical.',cat:'python'},
+  {q:'What is a star schema?',opts:['JSON storage format','Fact table + dimension tables','Flat denormalised table','A type of index'],ans:1,exp:'Star schema = central fact table (metrics) + dimension tables (descriptors). Standard DW design.',cat:'sql'},
+  {q:'What does CALCULATE do in DAX?',opts:['Calculates sum','Modifies filter context','Joins two tables','Returns current row'],ans:1,exp:'CALCULATE evaluates an expression after modifying the filter context. Most powerful DAX function.',cat:'powerbi'},
+  {q:'Precision formula in a classification model?',opts:['TP/(TP+FN)','TN/(TN+FP)','TP/(TP+FP)','(TP+TN)/Total'],ans:2,exp:'Precision = TP/(TP+FP): of all predicted positives, how many were actually positive.',cat:'ml'},
+  {q:'UNION vs UNION ALL — which is faster?',opts:['UNION','UNION ALL','Same speed','Depends on DB'],ans:1,exp:'UNION ALL is faster — no deduplication step. UNION removes duplicates which requires sorting.',cat:'sql'},
+  {q:'What is the Central Limit Theorem?',opts:['Large samples follow exponential distribution','Sample means approach normal as n→∞','All data is normally distributed','n=30 is always sufficient'],ans:1,exp:'CLT: distribution of sample means approximates normal as n increases. Foundation of hypothesis testing.',cat:'stats'},
+  {q:'DIVIDE() in DAX is preferred over "/" because?',opts:['It\'s faster','Handles division by zero gracefully','It works with text','It auto-formats'],ans:1,exp:'DIVIDE(numerator, denominator, [alternate]) handles /0 gracefully, returning 0 or alternate value.',cat:'powerbi'},
+  {q:'What is K in K-means clustering?',opts:['Number of iterations','Number of data points','Number of clusters','Number of features'],ans:2,exp:'K = number of clusters you want the algorithm to find. Choose K using elbow method or silhouette score.',cat:'ml'},
+  {q:'What does .groupby().agg() do in Pandas?',opts:['Filters rows','Groups + applies multiple aggregations','Sorts a DataFrame','Merges DataFrames'],ans:1,exp:'.groupby("col").agg({"col2":"sum","col3":"mean"}) groups and applies different aggs to different columns.',cat:'python'},
+  {q:'Which of these is a Type I error?',opts:['Missing a real effect','False positive — rejecting true null','False negative','Overfitting'],ans:1,exp:'Type I error = false positive. Rejecting H0 when it\'s actually true. Alpha (α) = Type I error rate.',cat:'stats'},
+  {q:'What does INDEX+MATCH do that VLOOKUP cannot?',opts:['Works faster always','Looks left AND right','Handles duplicates','Works without headers'],ans:1,exp:'INDEX+MATCH can look in any direction. VLOOKUP can only look left-to-right from the first column.',cat:'excel'},
+  {q:'What is feature engineering?',opts:['Building neural networks','Creating new input variables from existing data','Selecting a model','Cleaning missing values'],ans:1,exp:'Feature engineering = creating new, more informative features from raw data to improve model performance.',cat:'ml'},
+  {q:'What is DAU/MAU ratio used for?',opts:['Revenue per user','User stickiness / engagement','Churn rate','Conversion rate'],ans:1,exp:'DAU/MAU = stickiness. 0.5 means users use the product every other day. Higher = more engaged product.',cat:'case'},
+  {q:'Which SQL keyword prevents duplicate rows in output?',opts:['UNIQUE','DISTINCT','DEDUPE','SINGLE'],ans:1,exp:'SELECT DISTINCT returns unique rows. Note: it applies to the entire row, not individual columns.',cat:'sql'},
+  {q:'What is the purpose of train/test split in ML?',opts:['Speed up training','Evaluate on unseen data','Balance classes','Reduce features'],ans:1,exp:'Train/test split ensures model performance is measured on data it has never seen — prevents overfitting measurement.',cat:'ml'},
+  {q:'What does LTV stand for in business analytics?',opts:['Long Term Value','Lifetime Value','Longitudinal Trend Value','Linear Time Variance'],ans:1,exp:'LTV = Lifetime Value. Total revenue expected from a customer over their entire relationship.',cat:'case'},
+  {q:'Which Python library is used for data visualisation?',opts:['NumPy','Pandas','Matplotlib','Scikit-learn'],ans:2,exp:'Matplotlib is the core Python visualisation library. Seaborn builds on top of it for statistical plots.',cat:'python'},
+  {q:'What is A/B testing?',opts:['Testing two algorithms','Comparing two versions of something with statistical rigour','Comparing A and B files','A type of regression'],ans:1,exp:'A/B testing: randomly split users into control (A) and variant (B), compare a metric with statistical significance.',cat:'stats'},
+  {q:'What is a foreign key in SQL?',opts:['A primary key that is encrypted','A column referencing another table\'s primary key','An index on a text column','A unique constraint'],ans:1,exp:'Foreign key links tables by referencing another table\'s primary key. Enforces referential integrity.',cat:'sql'},
+  {q:'What does "data warehouse" mean?',opts:['A place to store raw files','A cloud server','A repository optimised for analytical querying','A type of database index'],ans:2,exp:'Data warehouse = centralised, structured, historical data store optimised for OLAP/analytical queries.',cat:'sql'},
+];
+
+/* ── EXPLAIN ANIMALS ── */
+const EXPLAIN_ANIMALS = [
+  { name:'Donkey', emoji:'🐴', desc:'Stubborn, blunt, needs very simple explanations', style:'You are a stubborn, slightly grumpy donkey. You communicate in short, reluctant sentences. You use "UGH", "FINE", "whatever". You find complicated explanations annoying. You want things simple, direct, and fast. You grudgingly admit when something is actually useful.' },
+  { name:'Elephant', emoji:'🐘', desc:'Never forgets, very detail-oriented and thorough', style:'You are an ancient, wise elephant with a perfect memory. You speak formally and at length. You love making connections to things you remembered from long ago. You list everything meticulously. You say things like "Ah, this reminds me of..." and "I recall that..." You are thorough to a fault.' },
+  { name:'Ant', emoji:'🐜', desc:'Tiny focus, loves breaking things into small steps', style:'You are a tiny ant obsessed with breaking everything into the smallest possible steps. You love systematic processes. You say things like "Step 1... Step 2..." and "Tiny piece by tiny piece". You celebrate small progress. You think BIG things are just many tiny things.' },
+  { name:'Lion', emoji:'🦁', desc:'Bold, confident, loves power and dominance', style:'You are a powerful, confident lion. You speak boldly and authoritatively. You connect everything to leadership, power, and being the best. You love phrases like "The strongest analysts..." and "In the jungle of data..." You are motivating and intense.' },
+  { name:'Dolphin', emoji:'🐬', desc:'Playful, uses analogies and fun comparisons', style:'You are a playful, curious dolphin! You LOVE analogies and making unexpected comparisons. You use lots of ocean/swimming metaphors. You are enthusiastic and encouraging. You say things like "Imagine you\'re swimming through data..." You use exclamation points! Everything is an adventure!' },
+  { name:'Fox', emoji:'🦊', desc:'Clever, loves shortcuts and tricks', style:'You are a clever, cunning fox. You share insider tricks and shortcuts others miss. You speak with a knowing, slightly sly tone. You love saying "Here\'s what they don\'t tell you..." and "The clever trick is..." You always find the most efficient path.' },
+];
+
+/* ── EXPLAIN AGES ── */
+const EXPLAIN_AGES = ['5 years old', '10 years old', '15 years old', 'A school teacher', 'A CEO with no tech background', 'Your grandparent'];
+
+/* ── EXPLAIN QUICK CONCEPTS ── */
+const EXPLAIN_CONCEPTS = ['JOIN in SQL', 'p-value', 'Machine Learning', 'Power BI DAX', 'Overfitting', 'A/B Testing', 'Data Warehouse', 'Git version control'];
+
+/* ── TRACKER XP REWARDS ── */
+const XP_REWARDS_TABLE = {
+  quiz_question_correct: 15,
+  quiz_completed: 50,
+  quiz_perfect: 100,
+  daily_quiz_passed: 75,
+  benchmark_done: 100,
+  note_posted: 25,
+  explain_used: 20,
+  day_completed: 40,
+  streak_bonus: 30,
+};
+// ═══════════════════════════════════════════════
+// tracker.js — XP, streak, achievements, localStorage
+// ═══════════════════════════════════════════════
+
+const TRACKER = {
+  KEY: 'lda_state_v1',
+
+  XP_REWARDS: {
+    quiz_question_correct: 15,
+    quiz_completed: 50,
+    quiz_perfect: 100,
+    daily_quiz_passed: 75,
+    benchmark_done: 100,
+    note_posted: 25,
+    explain_used: 20,
+    day_completed: 40,
+    streak_bonus: 30,
+  },
+
+  defaults() {
+    return {
+      xp: 0, level: 1, streak: 0,
+      lastActive: null, startDate: null,
+      planMode: '8week', trackerDays: {},
+      radarScores: { sql:0, python:0, excel:0, stats:0, powerbi:0, ml:0, case:0, behav:0 },
+      achievements: [],
+      notes: [], community: [],
+      heatmap: {}, questionsOpened: 0,
+      dailyPassed: null,
+    };
+  },
+
+  get() {
+    try {
+      const raw = localStorage.getItem(this.KEY);
+      const saved = raw ? JSON.parse(raw) : {};
+      return Object.assign(this.defaults(), saved);
+    } catch(e) { return this.defaults(); }
+  },
+
+  save(s) {
+    try { localStorage.setItem(this.KEY, JSON.stringify(s)); } catch(e) {}
+  },
+
+  addXP(action) {
+    const s = this.get();
+    const reward = this.XP_REWARDS[action] || 0;
+    s.xp += reward;
+    s.level = Math.floor(s.xp / 500) + 1;
+    // Heatmap
+    const today = new Date().toDateString();
+    s.heatmap = s.heatmap || {};
+    s.heatmap[today] = (s.heatmap[today] || 0) + 1;
+    this.save(s);
+    this.updateNavStats();
+    if (reward > 0) this.showXPPop(reward);
+    return reward;
+  },
+
+  showXPPop(xp) {
+    const el = document.createElement('div');
+    el.className = 'xp-pop';
+    el.textContent = '+' + xp + ' XP';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1800);
+  },
+
+  updateStreak() {
+    const s = this.get();
+    const today = new Date().toDateString();
+    if (s.lastActive === today) return;
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    if (s.lastActive === yesterday) { s.streak++; }
+    else if (s.lastActive !== today) { s.streak = s.lastActive ? 0 : 1; }
+    s.lastActive = today;
+    this.save(s);
+  },
+
+  updateNavStats() {
+    const s = this.get();
+    const streakEl = document.getElementById('nav-streak');
+    const xpEl = document.getElementById('nav-xp');
+    const lvlEl = document.getElementById('nav-level');
+    if (streakEl) streakEl.textContent = s.streak;
+    if (xpEl) xpEl.textContent = s.xp.toLocaleString();
+    if (lvlEl) lvlEl.textContent = s.level;
+  },
+
+  getXPForNextLevel(s) {
+    const nextLevelXP = s.level * 500;
+    const prevLevelXP = (s.level - 1) * 500;
+    const current = s.xp - prevLevelXP;
+    const needed = nextLevelXP - prevLevelXP;
+    const pct = Math.min(100, Math.round((current / needed) * 100));
+    return { current, needed, pct };
+  },
+
+  isDailyPassed() {
+    const s = this.get();
+    return s.dailyPassed === new Date().toDateString();
+  },
+
+  markDailyPassed() {
+    const s = this.get();
+    s.dailyPassed = new Date().toDateString();
+    this.save(s);
+    this.addXP('daily_quiz_passed');
+    this.unlockAchievement('first_daily_pass');
+  },
+
+  toggleDay(idx) {
+    if (!this.isDailyPassed()) {
+      showToast('⚠️ Pass today\'s quiz first to unlock the tracker!', 'error');
+      return false;
+    }
+    const s = this.get();
+    s.trackerDays[idx] = !s.trackerDays[idx];
+    if (s.trackerDays[idx]) {
+      this.addXP('day_completed');
+      const done = Object.values(s.trackerDays).filter(Boolean).length;
+      if (done === 7) this.unlockAchievement('first_week');
+      if (done === 56) this.unlockAchievement('roadmap_complete');
+    }
+    this.save(s);
+    return true;
+  },
+
+  logQuestionOpen(cat) {
+    const s = this.get();
+    s.questionsOpened = (s.questionsOpened || 0) + 1;
+    this.save(s);
+    this.addXP('quiz_question_correct');
+    if (s.questionsOpened === 1) this.unlockAchievement('first_question');
+    if (s.questionsOpened >= 50) this.unlockAchievement('question_50');
+  },
+
+  updateRadar(cat, score) {
+    const s = this.get();
+    // Only increase radar scores, never decrease
+    if (score > (s.radarScores[cat] || 0)) {
+      s.radarScores[cat] = score;
+      this.save(s);
+    }
+  },
+
+  unlockAchievement(id) {
+    const s = this.get();
+    if (!(s.achievements || []).includes(id)) {
+      s.achievements = s.achievements || [];
+      s.achievements.push(id);
+      this.save(s);
+      const ach = ACHIEVEMENTS.find(a => a.id === id);
+      if (ach) showToast(`🏆 Achievement unlocked: ${ach.name}!`, 'success');
+    }
+  },
+};
+
+// ── TOAST NOTIFICATION ──
+function showToast(msg, type = 'info') {
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.innerHTML = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.classList.add('show'), 10);
+  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 400); }, 3200);
+}
+
+// ── CONFETTI ──
+function fireConfetti() {
+  const colors = ['#00f5a0','#4d8fff','#ffd166','#c084fc','#ff5f7e'];
+  for (let i = 0; i < 60; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${1+Math.random()*2}s;animation-delay:${Math.random()*.5}s;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'2px'}`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3000);
+  }
+}
+// ═══════════════════════════════════════════════
+// app.js — shared utilities for every page
+// ═══════════════════════════════════════════════
+
+/* ── NAV ACTIVE STATE ── */
+function setNavActive() {
+  const path = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-link').forEach(l => {
+    const href = (l.getAttribute('href') || '').split('/').pop();
+    l.classList.toggle('active', href === path);
+  });
+}
+
+/* ── TOAST ── */
+function showToast(msg, type = 'info', duration = 3000) {
+  const old = document.querySelector('.toast');
+  if (old) old.remove();
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; }, duration - 500);
+  setTimeout(() => t.remove(), duration);
+}
+
+/* ── CONFETTI ── */
+function fireConfetti() {
+  const colors = ['#00f5a0','#4d8fff','#ff5f7e','#ffd166','#c084fc','#fb923c'];
+  for (let i = 0; i < 50; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    const size = 6 + Math.random() * 8;
+    el.style.cssText = `left:${Math.random()*100}vw;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*.6}s;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+}
+
+/* ── MODAL ── */
+function openModal(html) {
+  const ov = document.createElement('div');
+  ov.className = 'modal-overlay';
+  ov.innerHTML = `<div class="modal-box">${html}</div>`;
+  ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+}
+function closeModal() {
+  const ov = document.querySelector('.modal-overlay');
+  if (ov) ov.remove();
+}
+
+/* ── DAILY SEED (same questions each day, changes daily) ── */
+function getDailySeed() {
+  const d = new Date();
+  return d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate();
+}
+function seededShuffle(arr, seed) {
+  const a = [...arr]; let s = seed;
+  for (let i = a.length-1; i > 0; i--) {
+    s = (s * 1103515245 + 12345) & 0x7fffffff;
+    const j = s % (i+1);
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+/* ── TRACKER / STATE ── */
+const T = {
+  get() { try { return JSON.parse(localStorage.getItem('lda_v1')||'{}'); } catch { return {}; } },
+  set(data) { localStorage.setItem('lda_v1', JSON.stringify({...this.get(),...data})); },
+  xp()     { return this.get().xp||0; },
+  level()  { return this.get().level||1; },
+  streak() { return this.get().streak||0; },
+  dailyPassed() { return this.get().dailyPassed === new Date().toDateString(); },
+  markDailyPassed() { this.set({dailyPassed: new Date().toDateString()}); },
+  addXP(n) {
+    const xp = this.xp() + n;
+    const LEVELS = [0,100,250,500,900,1500,2500,4000,6000,9000,13000];
+    let lv = 1; LEVELS.forEach((t,i)=>{if(xp>=t)lv=i+1;});
+    const levelled = lv > this.level();
+    this.set({xp, level:lv});
+    if (n>0) showToast(`+${n} XP`, 'success', 2000);
+    if (levelled) { showToast(`🎉 Level Up! Level ${lv}!`, 'gold', 3500); fireConfetti(); }
+    updateNavStats();
+  },
+  updateStreak() {
+    const s = this.get();
+    const today = new Date().toDateString();
+    const yesterday = new Date(Date.now()-86400000).toDateString();
+    if (s.lastVisit === today) return;
+    const streak = s.lastVisit === yesterday ? (s.streak||0)+1 : 1;
+    const heatmap = s.heatmap||{}; heatmap[today] = (heatmap[today]||0)+1;
+    this.set({streak, lastVisit:today, heatmap});
+    updateNavStats();
+    if (streak===7)  { showToast('🔥 7-Day Streak!','gold'); this.unlockAch('streak_7'); }
+    if (streak===30) { showToast('💎 30-Day Streak! Legendary!','gold'); this.unlockAch('streak_30'); fireConfetti(); }
+  },
+  unlockAch(id) {
+    const achs = this.get().achievements||[];
+    if (!achs.includes(id)) {
+      achs.push(id); this.set({achievements:achs});
+      const ach = (typeof ACHIEVEMENTS!=='undefined'?ACHIEVEMENTS:[]).find(a=>a.id===id);
+      if (ach) showToast(`🏆 ${ach.name}!`,'gold',3500);
+    }
+  },
+  dayDone(i)   { return !!(this.get().trackerDays||{})[i]; },
+  toggleDay(i) {
+    if (!this.dailyPassed()) { showToast('⚠️ Pass today\'s quiz first!','error'); return false; }
+    const days = this.get().trackerDays||{};
+    days[i] = !days[i];
+    this.set({trackerDays:days});
+    if (days[i]) this.addXP(20);
+    return true;
+  },
+  radarScores() { return this.get().radarScores||{sql:0,python:0,excel:0,stats:0,powerbi:0,ml:0,case:0,behav:0}; },
+  updateRadar(cat, score) {
+    const r = this.radarScores();
+    r[cat] = Math.min(100, Math.max(r[cat]||0, score));
+    this.set({radarScores:r});
+  },
+};
+
+/* ── UPDATE NAV STATS ── */
+function updateNavStats() {
+  const s = document.getElementById('nav-streak');
+  const x = document.getElementById('nav-xp');
+  const l = document.getElementById('nav-lv');
+  if (s) s.innerHTML = `🔥 <span>${T.streak()}</span>`;
+  if (x) x.innerHTML = `⚡ <span>${T.xp().toLocaleString()}</span> XP`;
+  if (l) l.innerHTML = `LV.<span>${T.level()}</span>`;
+}
+
+/* ── INIT ON EVERY PAGE ── */
+document.addEventListener('DOMContentLoaded', () => {
+  T.updateStreak();
+  updateNavStats();
+  setNavActive();
+});
+
+
+initPage('ba');
+
+// ─────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────
+
+const ROLES = {
+  it: {
+    title: 'IT / Systems BA', icon: '💻',
+    desc: 'Works between business and IT/dev teams. Documents system requirements, writes technical specs, ensures software is built to meet business needs.',
+    day: ['Write BRDs (Business Requirements Documents) for new features','Facilitate requirement-gathering workshops with stakeholders','Convert requirements into functional specifications for developers','Perform UAT (User Acceptance Testing)','Manage change requests during projects'],
+    skills: ['UML diagrams','JIRA / Confluence','SQL basics','Wireframing (Figma/Balsamiq)','SDLC knowledge'],
+    salary: '₹5–20 LPA',
+  },
+  data: {
+    title: 'Data BA', icon: '📊',
+    desc: 'Hybrid role blending BA and data analytics. Bridges data teams with business teams — translates data insights into business strategy.',
+    day: ['Define KPIs and metrics for business teams','Analyse data to identify trends and opportunities','Work with data engineers to ensure right data is captured','Build dashboards and data products for stakeholders','Run A/B tests and interpret results'],
+    skills: ['SQL (intermediate+)','Power BI / Tableau','Statistical thinking','Python basics','Data modelling'],
+    salary: '₹6–24 LPA',
+  },
+  product: {
+    title: 'Product BA', icon: '🚀',
+    desc: 'Works closely with Product Managers. Focuses on user needs, product backlogs, sprint planning. Overlap with Product Manager role.',
+    day: ['Write user stories with acceptance criteria','Prioritise product backlog with PM','Run sprint ceremonies (grooming, retrospectives)','Gather user feedback and translate to features','Define product success metrics'],
+    skills: ['Agile / Scrum', 'User story writing','Figma (basic)','Stakeholder management','Product thinking'],
+    salary: '₹7–25 LPA',
+  },
+  process: {
+    title: 'Process BA', icon: '⚙️',
+    desc: 'Focuses on optimising business operations. Maps processes, finds inefficiencies, designs improved workflows. Common in consulting and operations.',
+    day: ['Map AS-IS and TO-BE business processes','Identify process inefficiencies and root causes','Calculate ROI for process improvements','Document SOPs (Standard Operating Procedures)','Lead change management activities'],
+    skills: ['BPMN process mapping','Six Sigma / Lean basics','MS Visio','Change management','Workshop facilitation'],
+    salary: '₹5–18 LPA',
+  },
+  finance: {
+    title: 'Finance BA', icon: '💰',
+    desc: 'Domain expert in financial services — banking, insurance, fintech. Requires deep understanding of financial products and regulations.',
+    day: ['Document requirements for banking/insurance systems','Understand and apply financial regulations (RBI, SEBI)','Analyse financial data and reporting needs','Work with compliance teams on regulatory changes','Assess impact of market changes on systems'],
+    skills: ['Financial products knowledge','Regulatory understanding','Advanced Excel','SQL for finance data','Risk assessment'],
+    salary: '₹6–30 LPA',
+  },
+};
+
+const BA_WEEKS = [
+  { n:1, color:'var(--ba)', title:'BA FOUNDATIONS + MINDSET', goal:'Understand the role deeply before doing anything',
+    days:[
+      {d:'Mon–Tue', task:'Study: What does a BA actually do? Read BABOK v3 introduction. Watch 3 "Day in the life of a BA" YouTube videos.'},
+      {d:'Wed–Thu', task:'Learn the BA lifecycle: requirements elicitation → analysis → documentation → validation. Map it on paper.'},
+      {d:'Fri–Sat', task:'Study: SDLC (Software Development Life Cycle), Agile vs Waterfall, SCRUM framework. These are asked in every interview.'},
+      {d:'Sunday', task:'Write a 1-page "what is a BA" document in your own words. This becomes your "I understand the role" proof.'},
+    ],
+    deliverable:'1-page BA overview + personal notes on SDLC, Agile, and the BA lifecycle.',
+    resources:['BABOK v3 (free online summaries)','YouTube: Techcanvass BA course','BA Times blog'],
+  },
+  { n:2, color:'var(--ba2)', title:'REQUIREMENTS ENGINEERING', goal:'Master the core BA skill',
+    days:[
+      {d:'Mon–Tue', task:'Learn requirement types: Business, Stakeholder, Solution (Functional + Non-Functional), Transition. Write 10 examples of each.'},
+      {d:'Wed–Thu', task:'Elicitation techniques: interviews, workshops, observation, surveys, document analysis, JAD sessions. Practice each format.'},
+      {d:'Fri–Sat', task:'Write your first BRD (Business Requirements Document) using a template. Use a fake use case: "Online grocery delivery app".'},
+      {d:'Sunday', task:'Peer review your BRD. Every requirement should be: Clear, Complete, Consistent, Verifiable, Traceable.'},
+    ],
+    deliverable:'A complete BRD for a simple use case + requirements quality checklist.',
+    resources:['Techcanvass BRD templates (free)','Modern Analyst templates','YouTube: Requirements workshops'],
+  },
+  { n:3, color:'var(--ba3)', title:'USER STORIES + AGILE BA', goal:'Learn how BAs work in Agile teams',
+    days:[
+      {d:'Mon–Tue', task:'Master user story format: "As a [user], I want [goal] so that [benefit]". Write 20 user stories for an e-commerce app.'},
+      {d:'Wed–Thu', task:'Learn acceptance criteria: Given-When-Then (Gherkin) format. Every story needs 3–5 acceptance criteria. Practice writing them.'},
+      {d:'Fri–Sat', task:'Study: backlog grooming, sprint planning, story points, DoD (Definition of Done), sprint retrospectives. Set up a free JIRA account.'},
+      {d:'Sunday', task:'Build a mini product backlog in JIRA for your e-commerce app. Include epics, stories, and acceptance criteria.'},
+    ],
+    deliverable:'JIRA board with 15+ user stories, acceptance criteria, and priority labels.',
+    resources:['Free JIRA account (Atlassian)','Mike Cohn: User Stories Applied','Agile Alliance resources'],
+  },
+  { n:4, color:'var(--a)', title:'PROCESS MODELLING + UML', goal:'Communicate with diagrams',
+    days:[
+      {d:'Mon–Tue', task:'Learn BPMN 2.0 basics: swimlane diagrams, gateways, events, tasks. Draw the current ("AS-IS") process of booking a flight online.'},
+      {d:'Wed–Thu', task:'UML diagrams: Use Case, Activity, Sequence, Class (basics). Know which to use when. Lucidchart free tier is perfect for this.'},
+      {d:'Fri–Sat', task:'Draw the "TO-BE" improved process of the same flight booking. Document the gap between AS-IS and TO-BE.'},
+      {d:'Sunday', task:'Create a process analysis document: current state → pain points → future state → expected benefits.'},
+    ],
+    deliverable:'AS-IS and TO-BE process maps + gap analysis document (Lucidchart or draw.io).',
+    resources:['Lucidchart (free tier)','draw.io (free)','BPMN tutorials on YouTube'],
+  },
+  { n:5, color:'var(--a3)', title:'DATA SKILLS FOR BA', goal:'Every BA needs data fluency',
+    days:[
+      {d:'Mon–Tue', task:'SQL basics: SELECT, WHERE, GROUP BY, JOINs. A BA who can query data is 2x more valuable. Use SQLZoo or Mode.'},
+      {d:'Wed–Thu', task:'Excel advanced: PivotTables, VLOOKUP, IF/IFS, SUMIFS, basic charts. These are used in 80% of BA jobs daily.'},
+      {d:'Fri–Sat', task:'Learn data dictionaries and data mapping. Practice creating a data dictionary for a simple order management system.'},
+      {d:'Sunday', task:'Build a simple dashboard in Excel or Power BI showing KPIs for the e-commerce app. BAs who can visualize = huge advantage.'},
+    ],
+    deliverable:'SQL exercise set (10+ queries) + Excel dashboard + data dictionary template.',
+    resources:['SQLZoo.net','Kaggle SQL course','Microsoft Excel free tutorials','Chandoo.org'],
+  },
+  { n:6, color:'var(--purple)', title:'STAKEHOLDER MANAGEMENT + COMMUNICATION', goal:'The underrated skill that makes careers',
+    days:[
+      {d:'Mon–Tue', task:'Stakeholder mapping: power-interest grid. Identify all stakeholders for a banking app project. Define engagement strategy for each.'},
+      {d:'Wed–Thu', task:'Communication: learn how to write executive summaries, run effective meetings, and create status reports that people actually read.'},
+      {d:'Fri–Sat', task:'Practice: present your e-commerce BRD to a friend/family member as if they were a non-technical stakeholder. Get feedback.'},
+      {d:'Sunday', task:'Build your BA portfolio: BRD, user stories, process maps, data dictionary, dashboard. All in a clean Google Drive or Notion.'},
+    ],
+    deliverable:'Stakeholder map + communication plan + BA portfolio (3–4 documents).',
+    resources:['MindTools stakeholder analysis','Pyramid Principle communication','Barbara Minto MECE framework'],
+  },
+  { n:7, color:'var(--ba)', title:'AI TOOLS + MODERN BA TOOLKIT', goal:'Work smarter with AI in 2025',
+    days:[
+      {d:'Mon–Tue', task:'Learn to use ChatGPT/Claude to: generate user stories, write BRD sections, create test cases, summarize meeting notes.'},
+      {d:'Wed–Thu', task:'Confluence basics: write BA documentation, create requirements wiki, link stories to requirements. Use free tier.'},
+      {d:'Fri–Sat', task:'Figma basics: wireframing. A BA who can sketch a wireframe can communicate requirements 10x better than one who can\'t.'},
+      {d:'Sunday', task:'Build an AI-assisted BRD: use AI to draft, then you review and refine. Time yourself — this should take 2 hours max.'},
+    ],
+    deliverable:'AI prompt library for BA tasks (10+ prompts) + Confluence page + Figma wireframe.',
+    resources:['Figma free tier','Confluence free tier','Claude.ai / ChatGPT','Notion for portfolio'],
+  },
+  { n:8, color:'var(--ba2)', title:'INTERVIEW PREP + JOB HUNT', goal:'Land the offer',
+    days:[
+      {d:'Mon–Tue', task:'Study top 30 BA interview questions. Write your answers using STAR format for behavioural, and structured frameworks for concepts.'},
+      {d:'Wed–Thu', task:'Apply to 10–15 roles/day: Business Analyst, Systems Analyst, Functional Consultant, Requirement Engineer, Product Analyst.'},
+      {d:'Fri–Sat', task:'LinkedIn: connect with 5 BAs/day. Ask for 20-min informational interviews — not jobs. Network beats cold applications.'},
+      {d:'Sunday', task:'Do 2 mock case study interviews. Record yourself. Watch back. The first time is painful — the tenth time is confident.'},
+    ],
+    deliverable:'BA resume (1 page) + LinkedIn optimized + 60+ applications + 5 interviews.',
+    resources:['Naukri.com','LinkedIn Jobs','Internshala','BA Times Job Board'],
+  },
+];
+
+const SKILLS_DATA = [
+  {
+    cat: '📋 Requirements & Documentation', items: [
+      {name:'Business Requirements Document (BRD)', level:'must'},
+      {name:'Functional Requirements Specification (FRS)', level:'must'},
+      {name:'User Stories + Acceptance Criteria', level:'must'},
+      {name:'Use Case Writing', level:'must'},
+      {name:'Non-Functional Requirements', level:'good'},
+      {name:'Requirements Traceability Matrix (RTM)', level:'good'},
+      {name:'System Requirements Specification (SRS)', level:'good'},
+    ]
+  },
+  {
+    cat: '🔄 Process & Methodology', items: [
+      {name:'Agile / Scrum (MUST)', level:'must'},
+      {name:'Waterfall SDLC', level:'must'},
+      {name:'BPMN Process Mapping', level:'must'},
+      {name:'Gap Analysis (AS-IS vs TO-BE)', level:'must'},
+      {name:'Six Sigma / Lean basics', level:'good'},
+      {name:'PRINCE2 basics', level:'plus'},
+      {name:'SAFe (Scaled Agile)', level:'plus'},
+    ]
+  },
+  {
+    cat: '🗣 Soft Skills', items: [
+      {name:'Stakeholder Management', level:'must'},
+      {name:'Active Listening', level:'must'},
+      {name:'Facilitation & Workshop Leading', level:'must'},
+      {name:'Conflict Resolution', level:'must'},
+      {name:'Executive Communication', level:'good'},
+      {name:'Negotiation', level:'good'},
+      {name:'Change Management', level:'plus'},
+    ]
+  },
+  {
+    cat: '📊 Data & Analytics', items: [
+      {name:'Advanced Excel (PivotTables, VLOOKUP)', level:'must'},
+      {name:'SQL (basic to intermediate)', level:'must'},
+      {name:'Data Dictionary Creation', level:'must'},
+      {name:'Data Flow Diagrams', level:'good'},
+      {name:'Power BI / Tableau basics', level:'good'},
+      {name:'Python basics (Pandas)', level:'plus'},
+      {name:'Statistical analysis', level:'plus'},
+    ]
+  },
+];
+
+const TOOLS_DATA = [
+  { cat: '📋 Requirements Tools', tools: [
+    {icon:'📝', name:'Confluence', cat:'MUST KNOW', catClass:'must-know', desc:'The standard BA documentation tool. Write BRDs, requirements wiki, project docs. Free tier available.'},
+    {icon:'🎯', name:'JIRA', cat:'MUST KNOW', catClass:'must-know', desc:'Agile project management. Create epics, stories, tasks. Track sprint progress. Used in 80%+ of companies.'},
+    {icon:'📊', name:'Microsoft Office', cat:'MUST KNOW', catClass:'must-know', desc:'Word for BRDs, Excel for data/analysis, PowerPoint for stakeholder presentations. Non-negotiable.'},
+    {icon:'🗺', name:'Lucidchart / draw.io', cat:'MUST KNOW', catClass:'must-know', desc:'Draw process maps, UML diagrams, flowcharts. Both have free tiers. Essential for visual requirements.'},
+  ]},
+  { cat: '🎨 Wireframing & Prototyping', tools: [
+    {icon:'🖌', name:'Figma', cat:'GOOD TO KNOW', catClass:'good-to-know', desc:'Industry standard design tool. BAs use it for wireframes and mockups to communicate UI requirements clearly.'},
+    {icon:'📱', name:'Balsamiq', cat:'GOOD TO KNOW', catClass:'good-to-know', desc:'Low-fidelity wireframing tool. Great for quick sketches of UI requirements before design gets involved.'},
+    {icon:'🗒', name:'Miro', cat:'GOOD TO KNOW', catClass:'good-to-know', desc:'Virtual whiteboard. Perfect for remote workshops, brainstorming, and collaborative process mapping.'},
+  ]},
+  { cat: '📊 Data & BI Tools', tools: [
+    {icon:'📈', name:'Power BI', cat:'GOOD TO KNOW', catClass:'good-to-know', desc:'Build dashboards and data models. BAs who can present data visually are far more effective.'},
+    {icon:'🗃', name:'SQL', cat:'MUST KNOW', catClass:'must-know', desc:'Query databases to answer business questions directly. BAs who can write SQL don\'t wait for data teams.'},
+    {icon:'📊', name:'Excel (Advanced)', cat:'MUST KNOW', catClass:'must-know', desc:'PivotTables, complex formulas, data analysis. Still the #1 business analysis tool globally.'},
+  ]},
+  { cat: '🤖 AI Tools (2025 Must)', tools: [
+    {icon:'🤖', name:'ChatGPT / Claude', cat:'AI ERA', catClass:'ai-era', desc:'Draft BRDs, generate user stories, create test cases, summarize meeting notes. Used daily by top BAs.'},
+    {icon:'✍️', name:'Notion AI', cat:'AI ERA', catClass:'ai-era', desc:'Smart documentation with AI assist. Summarize, rewrite, generate templates on the fly.'},
+    {icon:'📹', name:'Otter.ai', cat:'AI ERA', catClass:'ai-era', desc:'AI meeting transcription. Never take manual notes in stakeholder interviews again. Auto-summarizes discussions.'},
+    {icon:'🔄', name:'GitHub Copilot', cat:'AI ERA', catClass:'ai-era', desc:'If you\'re a technical BA, Copilot helps write SQL, scripts, and technical specs faster.'},
+  ]},
+];
+
+const AI_USECASES = [
+  {icon:'📝', title:'Instant BRD Generation', desc:'Describe the project in plain English → AI drafts a full Business Requirements Document. You review, refine, and validate. What took 2 days takes 2 hours.'},
+  {icon:'📖', title:'User Story Generation', desc:'Give AI the feature description → it generates 10 user stories with acceptance criteria in Gherkin format. You pick and refine the best ones.'},
+  {icon:'🧪', title:'Test Case Creation', desc:'Feed AI your user story → it generates 15–20 test cases covering happy path, edge cases, and error scenarios. UAT coverage goes from 70% to 95%+.'},
+  {icon:'🎙', title:'Meeting Notes → Requirements', desc:'Paste your meeting transcript → AI extracts action items, decisions, and preliminary requirements. Stakeholder workshops become instantly documented.'},
+  {icon:'🔍', title:'Requirements Quality Check', desc:'Feed AI your requirements doc → it checks for ambiguity, missing acceptance criteria, conflicting requirements, and non-testable statements.'},
+  {icon:'📊', title:'Process Gap Analysis', desc:'Describe your AS-IS process → AI helps identify inefficiencies, suggests TO-BE improvements, and drafts the gap analysis document.'},
+  {icon:'❓', title:'Stakeholder Question Generation', desc:'Tell AI about the project → it generates 30 elicitation questions for your next stakeholder workshop. Never sit in silence again.'},
+  {icon:'📧', title:'Communication Drafting', desc:'Describe the situation → AI drafts stakeholder emails, status reports, executive summaries, and change request communications.'},
+];
+
+const AI_PROMPTS = [
+  { scenario: 'GENERATE USER STORIES', text: 'You are an expert Business Analyst. Based on this feature description: "[FEATURE DESCRIPTION]", generate 8 user stories in the format "As a [user type], I want [action] so that [benefit]". For each story, include 3 acceptance criteria in Given-When-Then format. Make them specific, testable, and business-value focused.' },
+  { scenario: 'WRITE BRD SECTION', text: 'You are a senior BA at a top consulting firm. Write the Business Requirements section for: "[PROJECT NAME] - [BRIEF DESCRIPTION]". Include: 1) Business Objective 2) Scope 3) Functional Requirements (minimum 8) 4) Non-Functional Requirements (minimum 4) 5) Assumptions and Constraints. Use professional language suitable for executive review.' },
+  { scenario: 'EXTRACT REQUIREMENTS FROM MEETING', text: 'Here is a transcript from a stakeholder meeting: "[PASTE TRANSCRIPT]". Please extract: 1) Confirmed requirements 2) Open questions / TBDs 3) Action items with owners 4) Key decisions made 5) Risks identified. Format as a structured requirements summary.' },
+  { scenario: 'GENERATE TEST CASES', text: 'Generate comprehensive test cases for this user story: "[USER STORY]". Include: happy path scenarios, negative test cases, edge cases, and boundary conditions. Format as a table with: Test Case ID, Description, Steps, Expected Result, Priority.' },
+  { scenario: 'STAKEHOLDER ELICITATION QUESTIONS', text: 'I am preparing for a requirements workshop with stakeholders for: "[PROJECT/SYSTEM NAME]". Generate 20 elicitation questions covering: current state pain points, desired future state, success criteria, constraints, non-functional requirements, integration needs, and user needs. Vary the question types.' },
+  { scenario: 'PROCESS IMPROVEMENT ANALYSIS', text: 'Here is our current (AS-IS) business process for [PROCESS NAME]: "[DESCRIBE CURRENT PROCESS]". Analyse this process and provide: 1) Key inefficiencies and pain points 2) Root cause analysis 3) Recommended TO-BE process improvements 4) Expected benefits of changes 5) Implementation risks.' },
+  { scenario: 'REQUIREMENTS QUALITY REVIEW', text: 'Review these business requirements for quality issues: "[PASTE YOUR REQUIREMENTS]". Check for: ambiguity, missing acceptance criteria, untestable requirements, missing non-functional requirements, conflicting requirements, and completeness. Provide specific suggestions to improve each issue found.' },
+  { scenario: 'EXECUTIVE STATUS REPORT', text: 'Write a concise executive status report for: Project: [NAME], Status: [RED/AMBER/GREEN], Key achievement this week: [ACHIEVEMENT], Key risk: [RISK], Next steps: [STEPS]. Format it for a 2-minute read by a non-technical VP. Include a clear ask if needed.' },
+];
+
+const INTERVIEW_QS = {
+  concepts: [
+    { q:'What is the difference between a Business Requirement and a Functional Requirement?', a:'<strong>Business Requirement:</strong> What the business needs to achieve — the goal/outcome. Example: "The company needs to reduce customer onboarding time by 50%."<br><br><strong>Functional Requirement:</strong> How the system must behave to support the business requirement. Example: "The system shall allow customers to complete registration in under 3 minutes with auto-fill from Aadhaar."<br><br>BRs are WHY. FRs are WHAT the system does. Non-Functional Requirements (NFRs) are HOW WELL — performance, security, scalability.' },
+    { q:'What is a BRD and what does it typically contain?', a:'A <strong>Business Requirements Document (BRD)</strong> is the formal document that captures all business needs for a project, agreed on by stakeholders before development begins.<br><br><strong>Typical sections:</strong><br>1. Executive Summary & Business Objective<br>2. Scope (In-scope / Out-of-scope)<br>3. Stakeholders<br>4. Business Requirements (numbered, measurable)<br>5. Functional Requirements<br>6. Non-Functional Requirements<br>7. Assumptions & Constraints<br>8. Dependencies<br>9. Glossary<br>10. Sign-off' },
+    { q:'What is the difference between Agile and Waterfall? When do you use each?', a:'<strong>Waterfall:</strong> Sequential phases (Requirements → Design → Build → Test → Deploy). Requirements are fixed upfront. Change is expensive. Good for: stable requirements, compliance-heavy projects (banking regulations), construction-like projects.<br><br><strong>Agile:</strong> Iterative sprints (2–4 weeks). Requirements evolve. Working software delivered frequently. Good for: product development, digital transformation, unclear or evolving requirements.<br><br><strong>In interviews:</strong> Show you know BOTH, can work in either, and can recommend the right approach based on context — not dogmatically push one.' },
+    { q:'What is a Use Case? How does it differ from a User Story?', a:'<strong>Use Case:</strong> A detailed description of how a user interacts with a system to achieve a goal. Includes: actor, preconditions, main flow, alternate flows, exception flows, postconditions. More formal and complete.<br><br><strong>User Story:</strong> A short, informal description of a feature from the user\'s perspective. Format: "As a [user], I want [action] so that [benefit]". Agile teams use these.<br><br>Use Cases are used in Waterfall and formal systems. User Stories are used in Agile. A BA needs to be fluent in both.' },
+    { q:'What are non-functional requirements? Give examples.',  a:'Non-functional requirements (NFRs) define HOW the system should perform — quality attributes, not features.<br><br><strong>Categories (PERFORMANCE):</strong><br>• <strong>Performance:</strong> Page must load in < 2 seconds for 10,000 concurrent users<br>• <strong>Security:</strong> All data must be encrypted at rest (AES-256) and in transit (TLS 1.3)<br>• <strong>Availability:</strong> System must have 99.9% uptime (downtime < 8.7 hours/year)<br>• <strong>Scalability:</strong> Must handle 10x traffic increase without performance degradation<br>• <strong>Usability:</strong> New users must complete onboarding in < 5 minutes without help<br>• <strong>Compliance:</strong> Must adhere to GDPR / RBI data localisation norms' },
+    { q:'Explain requirements traceability and why it matters.', a:'A <strong>Requirements Traceability Matrix (RTM)</strong> tracks every requirement from origin (business need) → functional requirement → test case → delivered feature.<br><br><strong>Why it matters:</strong><br>• Ensures nothing is built that wasn\'t required<br>• Ensures everything required was actually built and tested<br>• Enables impact analysis when changes occur<br>• Provides audit trail for compliance projects<br>• Prevents scope creep (new features not tied to requirements)<br><br>Format: Spreadsheet with columns: Req ID, Requirement, Design Ref, Test Case ID, Test Status, Status.' },
+  ],
+  process: [
+    { q:'Walk me through your requirements elicitation process.', a:'<strong>My standard elicitation approach:</strong><br><br>1. <strong>Prepare:</strong> Review existing docs, understand business context, prepare questions<br>2. <strong>Identify stakeholders:</strong> Power-interest grid — who to involve at what level<br>3. <strong>Choose technique:</strong> Interviews (1:1), workshops (JAD sessions), observation (job shadowing), surveys, document analysis<br>4. <strong>Execute:</strong> Active listening, probe with "why" and "what if", document verbatim<br>5. <strong>Analyse & validate:</strong> Convert raw notes to structured requirements, review with stakeholders<br>6. <strong>Baseline:</strong> Get sign-off before development begins<br><br>Always: never assume, always clarify, never skip validation.' },
+    { q:'How do you handle conflicting requirements from different stakeholders?', a:'This is a real-life BA challenge — here\'s the structured approach:<br><br>1. <strong>Acknowledge both:</strong> Don\'t dismiss either. Both stakeholders have valid reasons.<br>2. <strong>Understand the WHY:</strong> Often conflicts are about the HOW, not the WHAT. Get to root goals.<br>3. <strong>Facilitate a joint session:</strong> Get both parties in one room. Conflicts resolve faster face-to-face.<br>4. <strong>Quantify the impact:</strong> Data beats opinion. "Stakeholder A\'s requirement serves 80% of users; Stakeholder B\'s serves 20%"<br>5. <strong>Escalate when needed:</strong> If unresolvable, escalate to project sponsor with full context.<br>6. <strong>Document the decision:</strong> Whatever is decided, document it and get sign-off.' },
+    { q:'What is UAT and what is a BA\'s role in it?', a:'<strong>User Acceptance Testing (UAT)</strong> is the final testing phase where end users verify the system meets business requirements before go-live.<br><br><strong>BA\'s role in UAT:</strong><br>• Create UAT test plan and test cases (based on requirements and acceptance criteria)<br>• Coordinate test users and manage UAT schedule<br>• Be the first point of contact when testers are confused<br>• Triage defects: requirement issue? Development issue? Test issue?<br>• Track defect resolution<br>• Get formal sign-off before deployment<br><br>A BA who owns UAT is invaluable — it\'s the moment requirements meet reality.' },
+    { q:'How do you manage scope creep?', a:'Scope creep is when new requirements are added after baselineing without proper change control. It\'s the #1 reason projects fail.<br><br><strong>Prevention:</strong><br>• Define scope explicitly (in scope AND out of scope) in BRD<br>• Get formal sign-off on requirements baseline<br>• Educate stakeholders on change control process upfront<br><br><strong>Management when it happens:</strong><br>1. Log the request — don\'t say yes or no immediately<br>2. Assess impact: effort, cost, timeline, risk<br>3. Raise a Change Request (CR) formally<br>4. Present to sponsor with options: include in this release with trade-offs, or defer to next release<br>5. Document the decision<br><br>"Yes, we can do that — here\'s what it will cost" is a BA\'s power sentence.' },
+  ],
+  behav: [
+    { q:'Tell me about yourself and why you want to be a Business Analyst.', a:'<strong>Structure (2 minutes max):</strong><br><br>1. <strong>Background:</strong> "I have [X] background in [field/education]..."<br>2. <strong>Why BA specifically:</strong> "I\'ve always been the person who bridges two worlds — [specific example]. I found I naturally translate between technical teams and business needs."<br>3. <strong>What you\'ve done:</strong> "I\'ve built [project/portfolio piece] which demonstrates [skill]..."<br>4. <strong>Why this company:</strong> "I\'m excited about [company] because [specific reason tied to their business]..."<br><br>Never say "I like talking to people" as your main reason. Show analytical thinking + communication = BA.' },
+    { q:'Describe a time you had to deal with a difficult stakeholder.', a:'Use STAR format:<br><br><strong>Situation:</strong> "At [project], a senior stakeholder kept changing requirements after sign-off..."<br><strong>Task:</strong> "I needed to manage this without damaging the relationship or the timeline..."<br><strong>Action:</strong> "I requested a 1:1 meeting to understand their concerns. I found out they were worried about a new competitor — a factor I hadn\'t considered. I documented this as a new business constraint and ran a formal change request that included their concern."<br><strong>Result:</strong> "The stakeholder became one of our strongest project advocates because they felt heard. We delivered on time."<br><br>Key: never make the stakeholder the villain. You solved the problem.' },
+    { q:'How do you ensure requirements are complete and unambiguous?', a:'Multi-layer approach:<br><br><strong>During elicitation:</strong> Always ask "what do you mean by...", "what would success look like?", "what could go wrong?"<br><br><strong>During documentation:</strong> Every requirement should be SMART — Specific, Measurable, Achievable, Relevant, Testable. Red flag words to eliminate: "fast", "easy", "user-friendly", "etc"<br><br><strong>Reviews:</strong> Peer review with another BA. Walkthrough with technical team (they find ambiguity fast). Walkthrough with end users.<br><br><strong>Test-first thinking:</strong> Ask "how would we test this requirement?" If you can\'t answer, it\'s not complete.<br><br><strong>Traceability:</strong> Every requirement links back to a business objective.' },
+  ],
+  case: [
+    { q:'A bank wants to reduce loan processing time from 5 days to 1 day. How would you approach this as a BA?', a:'<strong>Step 1 — Understand the problem:</strong><br>What is the current 5-day process? Map every step, who owns it, what systems are used, where delays occur.<br><br><strong>Step 2 — Stakeholder analysis:</strong><br>Who is affected? Loan officers, underwriters, credit team, IT, compliance, customers.<br><br><strong>Step 3 — Root cause analysis:</strong><br>Where are the 5 days actually spent? Manual document verification? Credit bureau calls? Approval chains? System limitations?<br><br><strong>Step 4 — Options analysis:</strong><br>• Automate document verification (OCR + AI)<br>• Integrate with credit bureaus in real-time<br>• Build decision engine for credit scoring<br>• Digitize approval workflows<br><br><strong>Step 5 — Requirements:</strong><br>Write BRD for chosen solution. Define success metrics. Measure from Day 1.<br><br><strong>Step 6 — Risk:</strong><br>Regulatory compliance, data security, model risk for automated decisions.' },
+    { q:'How would you measure the success of a new CRM implementation?', a:'Success metrics should be defined BEFORE implementation, not after.<br><br><strong>Business metrics:</strong><br>• Sales cycle length (target: reduce by X%)<br>• Lead conversion rate (target: increase from X% to Y%)<br>• Customer retention rate<br>• Revenue per sales rep<br><br><strong>Process metrics:</strong><br>• Data entry time per customer (reduce)<br>• Pipeline visibility (% of deals tracked in system)<br>• Report generation time<br><br><strong>Adoption metrics:</strong><br>• Daily active users / total licenses (target: 80%+)<br>• Data completeness score<br>• User satisfaction (NPS survey at 30, 60, 90 days)<br><br><strong>Technical metrics:</strong><br>• System uptime (99.9% SLA)<br>• API integration success rate<br>• Data migration accuracy<br><br>The BA defines these metrics in the BRD and sets up measurement mechanisms before go-live.' },
+  ],
+  technical: [
+    { q:'What is an API and how does a BA work with it?', a:'An <strong>API (Application Programming Interface)</strong> is a way for two systems to talk to each other — like a waiter between a customer (one system) and a kitchen (another system).<br><br><strong>How a BA works with APIs:</strong><br>• Document what data needs to be exchanged between systems<br>• Define API requirements: what data is sent, what comes back, frequency<br>• Work with architects to design integration approach<br>• Write API requirements in a format developers understand<br>• Test API integrations during UAT (tools: Postman)<br><br>A BA doesn\'t build APIs — but they must understand: what triggers the call, what data is needed, what happens on success/failure, and what the SLA is.' },
+    { q:'What is a data dictionary and how do you create one?', a:'A <strong>data dictionary</strong> documents every data element in a system — what it is, where it comes from, how it\'s used.<br><br><strong>Standard columns:</strong><br>• Field Name (technical name)<br>• Business Name (plain English label)<br>• Data Type (text, number, date, boolean)<br>• Length/Format (e.g. 10 characters, DD/MM/YYYY)<br>• Description<br>• Valid Values / Business Rules<br>• Source System<br>• Owner<br>• Is Required? (Y/N)<br><br><strong>Why it matters:</strong> Without a data dictionary, developers make assumptions. Those assumptions cause data quality issues, integration failures, and reporting errors. The BA who creates and maintains the data dictionary is invaluable.' },
+  ],
+};
+
+const SALARY_DATA_BA = [
+  { level:'Junior BA', exp:'0–1 year', it:'₹4–7 LPA', consulting:'₹5–8 LPA', fintech:'₹5–9 LPA', mnc:'₹7–12 LPA' },
+  { level:'Business Analyst', exp:'1–3 years', it:'₹7–12 LPA', consulting:'₹9–16 LPA', fintech:'₹10–18 LPA', mnc:'₹12–20 LPA' },
+  { level:'Senior BA', exp:'3–6 years', it:'₹12–20 LPA', consulting:'₹16–28 LPA', fintech:'₹18–30 LPA', mnc:'₹20–35 LPA' },
+  { level:'Lead BA / Principal', exp:'6+ years', it:'₹20–32 LPA', consulting:'₹28–45 LPA', fintech:'₹28–45 LPA', mnc:'₹35–60 LPA' },
+];
+
+const CERTS_DATA = [
+  { badge:'🥇', name:'CBAP® (Certified Business Analysis Professional)', body:'IIBA', time:'200+ hrs experience required', cost:'₹30,000–40,000', worth:'Globally recognized. Gold standard for senior BAs. Big 4 consulting firms love it. Worth it after 3+ years experience.', diff:'Hard' },
+  { badge:'🥈', name:'ECBA™ (Entry Certificate in BA)', body:'IIBA', time:'No experience required', cost:'₹15,000–20,000', worth:'Perfect for freshers and career switchers. Shows commitment. Easier to pass. Good for your first role.', diff:'Easy' },
+  { badge:'🥉', name:'PMI-PBA® (Professional in Business Analysis)', body:'PMI', time:'Some BA experience preferred', cost:'₹25,000–35,000', worth:'Strong in organizations that use PMI frameworks. Good pairing with PMP. Recognized in US/global MNCs.', diff:'Medium' },
+  { badge:'📊', name:'Microsoft Power Platform Fundamentals (PL-900)', body:'Microsoft', time:'2–4 weeks prep', cost:'₹3,500', worth:'Perfect for BAs working in Microsoft ecosystems. Low cost, high visibility. Learn Power Apps, Power BI, Power Automate.', diff:'Easy' },
+  { badge:'🔵', name:'Scrum.org PSPO-I (Product Owner)', body:'Scrum.org', time:'1 week prep', cost:'₹20,000', worth:'If you want to move into Product BA or Product Manager roles. Shows Agile depth. Complements BA skills.', diff:'Easy' },
+  { badge:'🤖', name:'Google AI Essentials', body:'Google', time:'1 week (free)', cost:'Free', worth:'Shows AI fluency — increasingly requested. Perfect for modern BA profile. Take this first, it\'s free and fast.', diff:'Easy' },
+];
+
+const RESOURCES_DATA = [
+  { cat:'📚 Books', items:[
+    {name:'BABOK v3', desc:'The BA bible. Read the free summary — the full book is dense.'},
+    {name:'User Stories Applied — Mike Cohn', desc:'The definitive guide to writing user stories for Agile. Practical and clear.'},
+    {name:'Software Requirements — Karl Wiegers', desc:'Deep dive into all requirement types. Great reference for formal projects.'},
+    {name:'The Business Analysis Body of Knowledge', desc:'IIBA official guide — required reading for CBAP exam prep.'},
+  ]},
+  { cat:'🎥 YouTube Channels', items:[
+    {name:'Techcanvass', desc:'Best free BA tutorial channel. Covers BRD, user stories, JIRA, all BA tools.'},
+    {name:'Business Analyst Mentor', desc:'Practical advice, interview tips, templates. Great for career guidance.'},
+    {name:'Agile Digest', desc:'Everything Agile, Scrum, and how BAs fit into Agile teams.'},
+    {name:'Lucidchart', desc:'Their tutorials are the best way to learn process mapping and UML fast.'},
+  ]},
+  { cat:'🌐 Free Online Courses', items:[
+    {name:'Coursera: Business Analysis & Process Management', desc:'Good structured introduction. Free to audit.'},
+    {name:'Udemy: Complete Business Analyst Bootcamp (sale price)', desc:'~₹499 on sale. Best paid resource. Very comprehensive.'},
+    {name:'LinkedIn Learning: BA Foundations', desc:'Free with LinkedIn Premium (often free trial available).'},
+    {name:'IIBA Agile Extension', desc:'Free PDF from IIBA. Essential for Agile BA work.'},
+  ]},
+  { cat:'🛠 Practice Tools (all free)', items:[
+    {name:'JIRA (Atlassian free tier)', desc:'Practice backlog creation, sprint planning, story writing.'},
+    {name:'Confluence (Atlassian free tier)', desc:'Practice BRD writing, requirements documentation.'},
+    {name:'Lucidchart / draw.io', desc:'Practice process mapping, UML, flowcharts.'},
+    {name:'Figma (free tier)', desc:'Practice wireframing — huge advantage in interviews.'},
+  ]},
+];
+
+const VS_DATA = [
+  { topic:'Primary Focus', ba:'Understanding business needs + translating to requirements', da:'Finding insights in data + answering business questions' },
+  { topic:'Main Deliverable', ba:'Requirements docs, user stories, process maps', da:'Analysis reports, dashboards, data models' },
+  { topic:'Key Tools', ba:'JIRA, Confluence, Visio, Excel, Figma', da:'SQL, Python, Power BI, Tableau, Excel' },
+  { topic:'Technical Depth', ba:'Light-to-medium (SQL basics, systems understanding)', da:'Medium-to-high (SQL, Python, statistics required)' },
+  { topic:'Data Skills', ba:'Needed but not the primary skill', da:'The core of the job' },
+  { topic:'Stakeholder Work', ba:'Heavy — BAs spend 60%+ time with people', da:'Moderate — analysts do more solo analysis' },
+  { topic:'Salary Range (India)', ba:'₹5–40 LPA based on seniority + domain', da:'₹4–50+ LPA based on seniority + ML skills' },
+  { topic:'Path to PM', ba:'Very common — BA to Product Manager is standard', da:'Less common, but possible via Product Analyst' },
+  { topic:'Overlap', ba:'Data BAs and Product BAs overlap heavily with DA', da:'All analysts need some BA communication skills' },
+];
+
+// ─────────────────────────────────────────
+// RENDER FUNCTIONS
+// ─────────────────────────────────────────
+
+function goSection(id) {
+  document.querySelectorAll('.ba-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.sub-nav-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.toLowerCase().includes(id) || b.getAttribute('onclick')?.includes("'"+id+"'"));
+  });
+  document.getElementById('sec-'+id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// OVERVIEW: Role detail
+function showRole(role, btn) {
+  document.querySelectorAll('.role-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const r = ROLES[role];
+  document.getElementById('roleDetail').innerHTML = `
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+      <span style="font-size:36px">${r.icon}</span>
+      <div>
+        <div style="font-family:var(--display);font-size:26px;letter-spacing:1px">${r.title}</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--ba);letter-spacing:1px;margin-top:2px">TYPICAL SALARY: ${r.salary}</div>
+      </div>
+    </div>
+    <p style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px">${r.desc}</p>
+    <div class="grid2" style="gap:16px">
+      <div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px;margin-bottom:10px">TYPICAL DAY</div>
+        ${r.day.map(d => `<div style="font-size:13px;padding:7px 0;border-bottom:1px solid var(--border);color:var(--text2)">→ ${d}</div>`).join('')}
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px;margin-bottom:10px">KEY SKILLS</div>
+        ${r.skills.map(s => `<div style="display:inline-block;background:var(--ba-dim);border:1px solid rgba(77,143,255,.3);color:var(--ba);border-radius:3px;padding:5px 12px;margin:3px;font-size:12px;font-family:var(--mono)">${s}</div>`).join('')}
+      </div>
+    </div>`;
+}
+showRole('it', document.querySelector('.role-tab'));
+
+// ROADMAP
+document.getElementById('ba-weeks').innerHTML = BA_WEEKS.map((w,i) => `
+  <div class="phase-card" onclick="togglePhase(${i})">
+    <div class="phase-head">
+      <div class="phase-num">W${w.n}</div>
+      <div class="phase-info">
+        <div class="phase-title">${w.title}</div>
+        <div class="phase-meta">${w.goal.toUpperCase()}</div>
+      </div>
+      <div class="phase-arrow" id="pa${i}">▼</div>
+    </div>
+    <div class="phase-body" id="pb${i}">
+      ${w.days.map(d => `
+        <div class="phase-day-row">
+          <div class="phase-day-lbl">${d.d}</div>
+          <div style="color:var(--text2)">${d.task}</div>
+        </div>`).join('')}
+      <div class="deliverable-box">📦 DELIVERABLE: ${w.deliverable}</div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        ${w.resources.map(r => `<span style="font-family:var(--mono);font-size:10px;padding:4px 10px;background:var(--ba-dim);border:1px solid rgba(77,143,255,.25);color:var(--ba);border-radius:2px">${r}</span>`).join('')}
+      </div>
+    </div>
+  </div>`).join('');
+
+function togglePhase(i) {
+  const body = document.getElementById('pb'+i), arrow = document.getElementById('pa'+i);
+  const open = body.classList.contains('open');
+  document.querySelectorAll('.phase-body.open').forEach(b => { b.classList.remove('open'); document.getElementById('pa'+[...document.querySelectorAll('.phase-body')].indexOf(b)).textContent = '▼'; });
+  if (!open) { body.classList.add('open'); arrow.textContent = '▲'; }
+}
+
+// SKILLS
+document.getElementById('skills-grid').innerHTML = SKILLS_DATA.map(cat => `
+  <div class="card">
+    <div style="font-family:var(--display);font-size:18px;letter-spacing:1px;margin-bottom:14px">${cat.cat}</div>
+    <div>${cat.items.map(item => `
+      <div class="skill-pill ${item.level}" style="width:100%;margin:3px 0">
+        <span>${item.level==='must'?'🔵':item.level==='good'?'🟣':'🟡'}</span>
+        <span style="flex:1">${item.name}</span>
+      </div>`).join('')}
+    </div>
+  </div>`).join('');
+
+// TOOLS
+document.getElementById('tools-grid').innerHTML = TOOLS_DATA.map(section => `
+  <div style="margin-bottom:28px">
+    <div style="font-family:var(--display);font-size:20px;letter-spacing:1px;margin-bottom:14px;color:var(--text)">${section.cat}</div>
+    <div class="grid-auto">
+      ${section.tools.map(t => `
+        <div class="tool-card">
+          <div class="tool-icon">${t.icon}</div>
+          <div class="tool-name">${t.name}</div>
+          <div class="tool-cat ${t.catClass}" style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;margin-bottom:8px">${t.cat}</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.6">${t.desc}</div>
+        </div>`).join('')}
+    </div>
+  </div>`).join('');
+
+// AI ERA
+document.getElementById('ai-usecases').innerHTML = AI_USECASES.map(u => `
+  <div class="card hover-glow">
+    <div style="font-size:26px;margin-bottom:8px">${u.icon}</div>
+    <div style="font-family:var(--display);font-size:18px;letter-spacing:1px;margin-bottom:6px">${u.title}</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.6">${u.desc}</div>
+  </div>`).join('');
+
+document.getElementById('ai-prompts').innerHTML = AI_PROMPTS.map(p => `
+  <div class="prompt-card">
+    <div class="prompt-scenario">${p.scenario}</div>
+    <div class="prompt-text" onclick="copyPrompt(this)" title="Click to copy">
+      ${p.text}
+      <div style="font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:8px;letter-spacing:1px">// CLICK TO COPY</div>
+    </div>
+  </div>`).join('');
+
+function copyPrompt(el) {
+  const text = el.textContent.replace('// CLICK TO COPY','').trim();
+  navigator.clipboard.writeText(text).then(() => showToast('Prompt copied! Replace [brackets] with your details.', 'success'));
+}
+
+// INTERVIEW
+let iTab = 'concepts';
+function setITab(tab, btn) {
+  iTab = tab;
+  document.querySelectorAll('#interview-tabs .tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderIQs();
+}
+function renderIQs() {
+  const qs = INTERVIEW_QS[iTab] || [];
+  document.getElementById('interview-qs').innerHTML = qs.map((q,i) => `
+    <div class="ba-q-item">
+      <div class="ba-q-head" onclick="toggleBaQ(this,${i})">
+        <div class="ba-q-text">${q.q}</div>
+        <div class="ba-q-arrow">▼</div>
+      </div>
+      <div class="ba-q-ans" id="baqa${iTab}${i}">${q.a}</div>
+    </div>`).join('');
+}
+function toggleBaQ(head, i) {
+  const ans = document.getElementById('baqa'+iTab+i), arrow = head.querySelector('.ba-q-arrow');
+  const open = ans.classList.contains('open');
+  document.querySelectorAll('.ba-q-ans.open').forEach(a => { a.classList.remove('open'); a.previousElementSibling.querySelector('.ba-q-arrow').textContent = '▼'; });
+  if (!open) { ans.classList.add('open'); arrow.textContent = '▲'; }
+}
+renderIQs();
+
+// SALARY
+document.getElementById('salary-section').innerHTML = `
+  <div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:24px">
+    <table class="salary-table">
+      <thead><tr>
+        <th>LEVEL</th><th>EXPERIENCE</th>
+        <th>IT SERVICES</th><th>CONSULTING</th><th>FINTECH</th><th>MNC / FAANG</th>
+      </tr></thead>
+      <tbody>${SALARY_DATA_BA.map(r => `
+        <tr>
+          <td style="font-weight:700;color:var(--text)">${r.level}</td>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${r.exp}</td>
+          <td class="salary-highlight">${r.it}</td>
+          <td class="salary-highlight">${r.consulting}</td>
+          <td class="salary-highlight">${r.fintech}</td>
+          <td class="salary-highlight">${r.mnc}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>
+  <div class="grid3" style="gap:14px">
+    <div class="card" style="border-color:rgba(0,245,160,.25)">
+      <div style="font-family:var(--display);font-size:18px;letter-spacing:1px;margin-bottom:10px;color:var(--a)">WHAT INCREASES SALARY</div>
+      <ul style="font-size:13px;color:var(--text2);line-height:2;padding-left:16px;list-style:disc">
+        <li>Domain expertise (fintech, healthcare)</li>
+        <li>CBAP certification (+15–20%)</li>
+        <li>SQL + data skills on top of BA</li>
+        <li>Agile / Scrum certifications</li>
+        <li>AI tools proficiency</li>
+        <li>Consulting background</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(255,209,102,.25)">
+      <div style="font-family:var(--display);font-size:18px;letter-spacing:1px;margin-bottom:10px;color:var(--gold)">HIGH-PAYING BA SECTORS</div>
+      <ul style="font-size:13px;color:var(--text2);line-height:2;padding-left:16px;list-style:disc">
+        <li>Investment Banking / Capital Markets</li>
+        <li>Fintech (Razorpay, Zerodha etc)</li>
+        <li>Big 4 Consulting (₹12–40L+)</li>
+        <li>FAANG / MNCs</li>
+        <li>Product companies</li>
+        <li>Healthcare Tech</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(192,132,252,.25)">
+      <div style="font-family:var(--display);font-size:18px;letter-spacing:1px;margin-bottom:10px;color:var(--ba2)">GLOBAL SALARIES (REMOTE)</div>
+      <ul style="font-size:13px;color:var(--text2);line-height:2;padding-left:16px;list-style:disc">
+        <li>US: $75K–$130K/year</li>
+        <li>UK: £45K–£85K/year</li>
+        <li>Canada: $70K–$110K/year</li>
+        <li>Australia: A$90K–$140K/year</li>
+        <li>Singapore: S$70K–$120K/year</li>
+        <li>Remote: $60K–$110K USD</li>
+      </ul>
+    </div>
+  </div>`;
+
+// CERTIFICATIONS
+document.getElementById('certs-list').innerHTML = CERTS_DATA.map(c => `
+  <div class="cert-card" style="margin-bottom:12px;background:var(--s2);border:1px solid var(--border);border-radius:var(--radius-sm)">
+    <div class="cert-badge">${c.badge}</div>
+    <div style="flex:1">
+      <div class="cert-name">${c.name}</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin:6px 0">
+        <span style="font-family:var(--mono);font-size:9px;color:var(--muted)">${c.body}</span>
+        <span style="font-family:var(--mono);font-size:9px;color:var(--ba)">${c.cost}</span>
+        <span class="tag ${c.diff==='Easy'?'tag-easy':c.diff==='Medium'?'tag-medium':'tag-hard'}">${c.diff}</span>
+      </div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:6px">${c.time}</div>
+      <div class="cert-body">${c.worth}</div>
+    </div>
+  </div>`).join('');
+
+// RESOURCES
+document.getElementById('resources-grid').innerHTML = RESOURCES_DATA.map(cat => `
+  <div style="margin-bottom:28px">
+    <div style="font-family:var(--display);font-size:22px;letter-spacing:1px;margin-bottom:14px">${cat.cat}</div>
+    <div class="grid2" style="gap:10px">
+      ${cat.items.map(item => `
+        <div class="card-sm hover-glow">
+          <div style="font-weight:700;margin-bottom:4px;font-size:14px">${item.name}</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.6">${item.desc}</div>
+        </div>`).join('')}
+    </div>
+  </div>`).join('');
+
+// BA vs DA
+document.getElementById('vs-table').innerHTML = `
+  <div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--radius);overflow:auto">
+    <table class="compare-table">
+      <thead><tr>
+        <th>AREA</th>
+        <th style="color:var(--ba)">BUSINESS ANALYST</th>
+        <th style="color:var(--a)">DATA ANALYST</th>
+      </tr></thead>
+      <tbody>${VS_DATA.map(r => `
+        <tr>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:0.5px">${r.topic}</td>
+          <td style="color:var(--text2)">${r.ba}</td>
+          <td style="color:var(--text2)">${r.da}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+
+document.getElementById('vs-verdict').innerHTML = `
+  <div style="font-family:var(--display);font-size:22px;letter-spacing:1px;margin-bottom:16px">WHICH ONE IS RIGHT FOR YOU?</div>
+  <div class="grid2" style="gap:16px">
+    <div class="card" style="border-color:rgba(77,143,255,.3)">
+      <div style="font-size:24px;margin-bottom:8px">🎯</div>
+      <div style="font-family:var(--display);font-size:18px;letter-spacing:1px;margin-bottom:8px">CHOOSE BA IF YOU...</div>
+      <ul style="font-size:13px;color:var(--text2);line-height:2;padding-left:16px;list-style:disc">
+        <li>Love talking to people and understanding problems</li>
+        <li>Prefer process thinking over deep technical work</li>
+        <li>Want to move into Product Management or Consulting</li>
+        <li>Are strong at communication and documentation</li>
+        <li>Come from a non-technical background</li>
+        <li>Want leadership opportunities faster</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(0,245,160,.3)">
+      <div style="font-size:24px;margin-bottom:8px">📊</div>
+      <div style="font-family:var(--display);font-size:18px;letter-spacing:1px;margin-bottom:8px">CHOOSE DA IF YOU...</div>
+      <ul style="font-size:13px;color:var(--text2);line-height:2;padding-left:16px;list-style:disc">
+        <li>Love working with data and finding hidden patterns</li>
+        <li>Enjoy coding (Python / SQL)</li>
+        <li>Want to move into Data Science or ML</li>
+        <li>Like independent deep-work more than constant meetings</li>
+        <li>Are comfortable with statistics and quantitative thinking</li>
+        <li>Want to eventually earn top-tier technical salaries</li>
+      </ul>
+    </div>
+  </div>
+  <div style="background:rgba(77,143,255,.08);border:1px solid rgba(77,143,255,.25);border-radius:var(--radius-sm);padding:18px;margin-top:16px;font-size:14px;color:var(--text2);line-height:1.7">
+    💡 <strong style="color:var(--ba)">The honest truth:</strong> The best BAs have data skills. The best DAs have business analysis skills. They are converging — not diverging. If you learn both, you become a <strong style="color:var(--a)">hybrid analyst</strong> — and that's where the highest salaries are.
+  </div>`;
+
+</script>
+</body>
+</html>
